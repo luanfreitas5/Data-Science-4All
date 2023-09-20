@@ -1,0 +1,39 @@
+---
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+
+```{r}
+library(tidyverse)
+library(jsonlite)
+library(listviewer)
+library(scales)
+library(dplyr)
+library(readxl)
+library(readr)
+library(readtext)
+library(ggplot2)
+
+#Arquivo com funcionalidades que transformam o arquivo formato list em DataFrames
+source("elattes.ls2df.R")
+
+publication <- fromJSON("Geotecnia/publication.json")
+
+publication.periodico.df <- pub.ls2df(publication, 1) #artigos
+publication.livros.df <- pub.ls2df(publication, 2) #livros
+publication.eventos.df <- pub.ls2df(publication, 5) #eventos
+
+```
+
+```{r}
+publication.eventos.df %>%
+  group_by(pais_do_evento) %>%
+  summarise(Quantidade = n()) %>%
+  filter(pais_do_evento != "Brasil") %>% 
+  ggplot(aes(x = reorder(pais_do_evento, (Quantidade)), y = Quantidade)) +
+  geom_col(fill = "coral3")+ geom_text(aes(label=comma(Quantidade)),hjust=-0.2,vjust=0.3,size=2.5)+ coord_flip() +
+  labs(title = "Participação de Eventos em Países Estrangeiros", x = "Países", y = "Quantidade de Livros")+theme_bw()
+```
