@@ -1,0 +1,983 @@
+
+\section{Fase 2 - Entendimento dos Dados}
+
+\subsection{2.1 - Coleta inicial dos dados}
+
+Os arquivos json para análise foram fornecidos na plataforma unb.elattes da UnB, que disponibiliza de forma acessível informações relevantes dos programas avaliados. Os dados fornecem informações entre os anos de 2010 e 2019 [\citet{unb_elattes_2011}].
+
+\paragraph{Perfil profissional dos docentes vinculados às pós-graduações}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{file.info}\StringTok{("Geotecnia/profile.json")}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                          size isdir mode               mtime               ctime
+## Geotecnia/profile.json 805404 FALSE  666 2019-08-30 19:29:28 2019-09-17 14:57:33
+##                                      atime exe
+## Geotecnia/profile.json 2019-09-17 14:57:33  no
+\end{verbatim}
+
+O arquivo profile.json apresenta dados sobre o perfil de todos os docentes vinculados a programas de pós-graduação da UnB, entre 2010 e 2019. Esse arquivo foi fornecido pelos docentes responsáveis pela disciplina.
+
+\paragraph{Orientações de mestrado e doutorado realizadas pelos docentes vinculados às pós-graduações}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{file.info}\StringTok{("Geotecnia/advise.json")}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                         size isdir mode               mtime               ctime
+## Geotecnia/advise.json 289779 FALSE  666 2019-08-30 19:29:28 2019-09-17 14:57:33
+##                                     atime exe
+## Geotecnia/advise.json 2019-09-17 14:57:33  no
+\end{verbatim}
+
+
+O arquivo advise.json apresenta dados sobre o orientações de mestrado e doutorado feitas por todos os docentes vinculados a programas de pós-graduação da UnB, entre 2010 e 2019. Esse arquivo foi fornecido pelos docentes responsáveis pela disciplina.
+
+\paragraph{Produção bibliográfica gerada pelos docentes vinculados às pós-graduações}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{file.info}\StringTok{("Geotecnia/publication.json")}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                              size isdir mode               mtime               ctime
+## Geotecnia/publication.json 419637 FALSE  666 2019-08-30 19:29:28 2019-09-17 14:57:33
+##                                          atime exe
+## Geotecnia/publication.json 2019-09-17 14:57:33  no
+\end{verbatim}
+
+O arquivo publication.json apresenta dados sobre a produção bibliográfica gerada por todos os docentes vinculados a programas de pós-graduação da UnB, entre 2010 e 2019.
+
+\paragraph{Agrupamento dos docentes conforme áreas de atuação}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{file.info}\StringTok{("Geotecnia/graph.json")}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                      size isdir mode               mtime               ctime
+## Geotecnia/graph.json 3392 FALSE  666 2019-08-30 19:29:28 2019-09-17 14:57:33
+##                                    atime exe
+## Geotecnia/graph.json 2019-09-17 14:57:33  no
+\end{verbatim}
+
+O arquivos graph.json de Geotecnia apresenta redes de colaboração na co-autoria de artigos científicos, feitas entre os docentes vinculados a programas de pós-graduação da UnB, entre 2010 e 2019.
+
+\subsection{2.2 - Descrição dos Dados}
+
+Para ler, manipular, analisar e visualizar estes dados, serão utilizadas as seguintes bibliotecas:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tidyverse)}
+\KeywordTok{library}\NormalTok{(jsonlite)}
+\KeywordTok{library}\NormalTok{(listviewer)}
+\KeywordTok{library}\NormalTok{(scales)}
+\KeywordTok{library}\NormalTok{(dplyr)}
+\KeywordTok{library}\NormalTok{(readxl)}
+\KeywordTok{library}\NormalTok{(readr)}
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\end{Highlighting}
+\end{Shaded}
+
+Com essas bibliotecas habilitadas será possível de responder e determinar qual o volume de dados, a estrutura dos
+dados (tipos), codificações usadas, entre outras atividades importantes para análise dos dados.
+
+\paragraph{Descrição dos dados do perfil}
+
+O arquivo profile.json, que contém dados que caracterizam o perfil profissional de todos os docentes do grupo sob análise, podem ser lido por meio do comando seguinte:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{profile <- }\StringTok{ }\KeywordTok{fromJSON}\NormalTok{(}\StringTok{"Geotecnia/profile.json"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+A quantidade de docentes de Geotecnia sob análise é apresentada a seguir.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{length}\NormalTok{(profile)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 12
+\end{verbatim}
+
+Para apresentar os dados que estão contido nos dados de perfil dos docentes, vamos usar a função glimpse, da biblioteca dplyr, como ilustra o código seguinte, que apresenta os atributos típicos que podem ser obtidos relativamente a um pesquisador específico, o mais antigo docente ainda em exercício na UnB a ter criado seu registro na plataforma unb.elattes.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{glimpse}\NormalTok{(profile[[}\DecValTok{1}\NormalTok{]], }\DataTypeTok{width =} \DecValTok{30}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## List of 7
+##  $ nome                  : chr "André Luís Brasil Cavalcante"
+##  $ resumo_cv             : chr "André L. Brasil Cavalcante graduou-se em Engenharia Civil pela Universidade de Brasília em 1997, ocasião na qua"| __truncated__
+##  $ areas_de_atuacao      :'data.frame':	4 obs. of  4 variables:
+##   ..$ grande_area  : chr [1:4] "ENGENHARIAS" "ENGENHARIAS" "ENGENHARIAS" "ENGENHARIAS"
+##   ..$ area         : chr [1:4] "Engenharia Civil" "Engenharia Civil" "Engenharia Civil" "Engenharia Mecânica"
+##   ..$ sub_area     : chr [1:4] "Geotécnica" "Geotécnica" "Geotécnica" "Fenômenos de Transporte"
+##   ..$ especialidade: chr [1:4] "Geotecnia Ambiental e Mineração" "Remediação de Áreas Contaminadas" "Obras de Terra e Enrocamento" "Princípios Variacionais e Métodos Numéricos"
+##  $ endereco_profissional :List of 8
+##   ..$ instituicao: chr "Universidade de Brasília"
+##   ..$ orgao      : chr "ENC/FT/UNB"
+##   ..$ unidade    : chr ""
+##   ..$ DDD        : chr "61"
+##   ..$ telefone   : chr "31071269"
+##   ..$ bairro     : chr "ASA NORTE"
+##   ..$ cep        : chr "70910900"
+##   ..$ cidade     : chr "Brasília"
+##  $ producao_bibiografica :List of 6
+##   ..$ ARTIGO_ACEITO                         :'data.frame':	2 obs. of  10 variables:
+##   .. ..$ natureza        : chr [1:2] "NAO_INFORMADO" "NAO_INFORMADO"
+##   .. ..$ titulo          : chr [1:2] "The Iota-Delta Function as an Alternative to Boolean Formalism" "On the Iota-Delta Function: Universality in Turing Machines' Representation"
+##   .. ..$ periodico       : chr [1:2] "INTERNATIONAL JOURNAL OF FOUNDATIONS OF COMPUTER SCIENCE" "JOURNAL OF COMPUTER AND SYSTEM SCIENCES"
+##   .. ..$ ano             : chr [1:2] "2018" "2018"
+##   .. ..$ volume          : chr [1:2] "" ""
+##   .. ..$ issn            : chr [1:2] "01290541" "00220000"
+##   .. ..$ paginas         : chr [1:2] " - " " - "
+##   .. ..$ doi             : chr [1:2] "" ""
+##   .. ..$ autores         :List of 2
+##   .. ..$ autores-endogeno:List of 2
+##   ..$ CAPITULO_DE_LIVRO                     :'data.frame':	5 obs. of  13 variables:
+##   .. ..$ tipo                    : chr [1:5] "Capítulo de livro publicado" "Capítulo de livro publicado" "Capítulo de livro publicado" "Capítulo de livro publicado" ...
+##   .. ..$ titulo_do_capitulo      : chr [1:5] "Modelos teóricos de infiltração em meios porosos: equação de Richards e suas aplicações" "Energy and Reliability Applied to Continuous Flight Auger Pilings - The SCCAP Methodology" "Cellular Automata for Modeling Transport Phenomena in Porous Media" "Tomografias computadorizadas e análises numéricas aplicadas à caracterização da estrutura porosa de solos não saturados" ...
+##   .. ..$ titulo_do_livro         : chr [1:5] "Tópicos sobre infiltração: teoria e prática aplicadas a solos tropicais" "Proceedings of the 18th International Conference on Soil Mechanics and Geotechnical Engineering. Challenges and"| __truncated__ "Numerical Methods in Geotechnical Engineering" "Solos não saturados no contexto geotécnico" ...
+##   .. ..$ ano                     : chr [1:5] "2012" "2013" "2014" "2015" ...
+##   .. ..$ doi                     : chr [1:5] "" "" "10.1201/b17017-190" "" ...
+##   .. ..$ pais_de_publicacao      : chr [1:5] "Brasil" "França" "Brasil" "Brasil" ...
+##   .. ..$ isbn                    : chr [1:5] "9788560313419" "9782859784775" "9781138001466" "9788567950037" ...
+##   .. ..$ nome_da_editora         : chr [1:5] "José Camapum de Carvalho, Gilson de Farias Neves Gitirana Junior, Eufrosina Terezinha Leão Carvalho" "Presses des Ponts" "Routledge Taylor & Francis Group" "ABMS" ...
+##   .. ..$ numero_da_edicao_revisao: chr [1:5] "1" "1" "1" "1" ...
+##   .. ..$ organizadores           : chr [1:5] "José Camapum de Carvalho; Gilson de Farias Neves Gitirana Junior, Eufrosina Terezinha Leão Carvalho" "Pierre Delage, Jacques Desrues, Roger Frank, Alain Puech, François Schlosser" "Michael A. Hicks, Ronald B.J. Brinkgreve, Alexander Rohe" "José Camapum de Carvalho, Gilson de Farias Neves Gitirana Junior, Sandro Lemos Machado, Márcia Maria dos Anjos "| __truncated__ ...
+##   .. ..$ paginas                 : chr [1:5] "249 - 268" "2807 - 2810" "1073 - 1077" "531 - 553" ...
+##   .. ..$ autores                 :List of 5
+##   .. ..$ autores-endogeno        :List of 5
+##   ..$ DEMAIS_TIPOS_DE_PRODUCAO_BIBLIOGRAFICA:'data.frame':	1 obs. of  9 variables:
+##   .. ..$ natureza          : chr "Artigo Completo Publicado no Periódico arXiv"
+##   .. ..$ titulo            : chr "Continuum versus Discrete: A Physically Interpretable General Rule for Cellular Automata by means of Modular Arithmetic"
+##   .. ..$ ano               : chr "2012"
+##   .. ..$ pais_de_publicacao: chr "Estados Unidos"
+##   .. ..$ editora           : chr "arXiv"
+##   .. ..$ doi               : chr ""
+##   .. ..$ numero_de_paginas : chr "37"
+##   .. ..$ autores           :List of 1
+##   .. ..$ autores-endogeno  :List of 1
+##   ..$ EVENTO                                :'data.frame':	68 obs. of  11 variables:
+##   .. ..$ natureza        : chr [1:68] "COMPLETO" "RESUMO" "COMPLETO" "COMPLETO" ...
+##   .. ..$ titulo          : chr [1:68] "Cálculo Probabilístico do Fator de Segurança em Projetos de Barragens de Rejeitos" "Modelagem Matemática da Contaminação de Rios, Utilizando o Microsoft Excel" "Modelagem Laboratorial e Numérica de Transporte de Contaminantes no Aterro Jóquei Clube no DF" "Riscos Associados aos Projetos de Barragens de Rejeito" ...
+##   .. ..$ nome_do_evento  : chr [1:68] "XII Congresso Nacional de Geotecnia" "VI Simpósio Inovação no Ensino Superior" "COBRAMSEG 2010: Congresso Brasileiro de Mecânica dos Solos e Engenharia Geotécnica" "COBRAMSEG 2010: Congresso Brasileiro de Mecânica dos Solos e Engenharia Geotécnica" ...
+##   .. ..$ ano_do_trabalho : chr [1:68] "2010" "2010" "2010" "2010" ...
+##   .. ..$ pais_do_evento  : chr [1:68] "Portugal" "Brasil" "Brasil" "Brasil" ...
+##   .. ..$ cidade_do_evento: chr [1:68] "Guimarães" "Brasília" "Gramado, RS" "Gramado, RS" ...
+##   .. ..$ doi             : chr [1:68] "" "" "" "" ...
+##   .. ..$ classificacao   : chr [1:68] "NACIONAL" "REGIONAL" "NACIONAL" "NACIONAL" ...
+##   .. ..$ paginas         : chr [1:68] "1 - 8" "1 - 1" "1 - 8" "1 - 7" ...
+##   .. ..$ autores         :List of 68
+##   .. ..$ autores-endogeno:List of 68
+##   ..$ LIVRO                                 :'data.frame':	1 obs. of  13 variables:
+##   .. ..$ titulo                  : chr "Anais do Simpósio de Prática de Engenharia Geotécnica na Região Centro Oeste (GEOCENTRO 2017)"
+##   .. ..$ ano                     : chr "2017"
+##   .. ..$ tipo                    : chr "LIVRO_ORGANIZADO_OU_EDICAO"
+##   .. ..$ natureza                : chr "ANAIS"
+##   .. ..$ pais_de_publicacao      : chr "Brasil"
+##   .. ..$ isbn                    : chr "9788567950051"
+##   .. ..$ doi                     : chr ""
+##   .. ..$ nome_da_editora         : chr "ABMS"
+##   .. ..$ numero_da_edicao_revisao: chr "1"
+##   .. ..$ numero_de_paginas       : chr "854"
+##   .. ..$ numero_de_volumes       : chr "1"
+##   .. ..$ autores                 :List of 1
+##   .. ..$ autores-endogeno        :List of 1
+##   ..$ PERIODICO                             :'data.frame':	31 obs. of  10 variables:
+##   .. ..$ natureza        : chr [1:31] "COMPLETO" "COMPLETO" "COMPLETO" "COMPLETO" ...
+##   .. ..$ titulo          : chr [1:31] "Lagrange's Inversion Theorem and Infiltration" "On Modelling Coninuous Flight Auger Pilings by means of Energy" "On Modelling Coninuous Flight Auger Pilings by means of Energy" "On Modeling Tailings Deposition: Analytical and Numerical Methods" ...
+##   .. ..$ periodico       : chr [1:31] "World Academy of Science, Engineering and Technology (Online)" "International Journal of Science and Engineering Investigations" "International Journal of Science and Engineering Investigations" "International Journal of Science and Engineering Investigations" ...
+##   .. ..$ ano             : chr [1:31] "2012" "2012" "2012" "2012" ...
+##   .. ..$ volume          : chr [1:31] "6" "1" "01" "1" ...
+##   .. ..$ issn            : chr [1:31] "20103778" "22518843" "22518843" "22518843" ...
+##   .. ..$ paginas         : chr [1:31] "388 - 393" "11 - 16" "11 - 16" "64 - 70" ...
+##   .. ..$ doi             : chr [1:31] "" "" "" "" ...
+##   .. ..$ autores         :List of 31
+##   .. ..$ autores-endogeno:List of 31
+ $ orientacoes_academicas:List of 8
+##   ..$ ORIENTACAO_CONCLUIDA_DOUTORADO              :'data.frame':	5 obs. of  13 variables:
+##   .. ..$ natureza                   : chr [1:5] "Tese de doutorado" "Tese de doutorado" "Tese de doutorado" "Tese de doutorado" ...
+##   .. ..$ titulo                     : chr [1:5] "Concepção e Validaçao de um Modelo Matemático-digital para o Meio Poroso por Meio de Microtomografia, Autômatos"| __truncated__ "Aspectos Geotécnicos e e Ambientais para a Disposição Adequada de Lodo de Esgoto" "Aplicação da Lógica Fuzzy no Controle do Desempenho de Estacas Hélice Contínua" "Estudo Comparativo da Mobilidade de Contaminantes Inorgânicos em Solos Lateríticos e Não Lateríticos" ...
+##   .. ..$ ano                        : chr [1:5] "2014" "2014" "2016" "2016" ...
+##   .. ..$ id_lattes_aluno            : chr [1:5] "1853213451758913" "4994189165685449" "5372672441111608" "3289800404391423" ...
+##   .. ..$ nome_aluno                 : chr [1:5] "Luan Carlos de S.M. Ozelim" "Leonardo Ramos da Silveira" "Mylane Viana Hortegal" "Renata Conciani" ...
+##   .. ..$ instituicao                : chr [1:5] "Universidade de Brasília" "Universidade de Brasília" "Universidade de Brasília" "Universidade de Brasília" ...
+##   .. ..$ curso                      : chr [1:5] "Geotecnia" "Geotecnia" "Geotecnia" "Geotecnia" ...
+##   .. ..$ codigo_do_curso            : chr [1:5] "51500329" "51500329" "51500329" "51500329" ...
+##   .. ..$ bolsa                      : chr [1:5] "SIM" "SIM" "SIM" "SIM" ...
+##   .. ..$ agencia_financiadora       : chr [1:5] "Conselho Nacional de Desenvolvimento Científico e Tecnológico" "Conselho Nacional de Desenvolvimento Científico e Tecnológico" "Coordenação de Aperfeiçoamento de Pessoal de Nível Superior" "Conselho Nacional de Desenvolvimento Científico e Tecnológico" ...
+##   .. ..$ codigo_agencia_financiadora: chr [1:5] "002200000000" "002200000000" "045000000000" "002200000000" ...
+##   .. ..$ nome_orientadores          :List of 5
+##   .. ..$ id_lattes_orientadores     :List of 5
+##   ..$ ORIENTACAO_CONCLUIDA_MESTRADO               :'data.frame':	15 obs. of  13 variables:
+##   .. ..$ natureza                   : chr [1:15] "Dissertação de mestrado" "Dissertação de mestrado" "Dissertação de mestrado" "Dissertação de mestrado" ...
+##   .. ..$ titulo                     : chr [1:15] "Modelagem Multidimensional de Transporte de Contaminantes Inorgânicos em Solos Tropicais Lateríticos" "Estudo de Barreiras de Solo Compactado para Retenção de Contaminantes" "Análise do Transporte Multiespécies do Lixiviado de Moravia/Colômbia por meio de Ensaios em Coluna em Escala de"| __truncated__ "Transporte de Contaminantes Inorgânicos em Solos Tropicais Lateríticos: Abordagem com Cálculo Fracionário" ...
+##   .. ..$ ano                        : chr [1:15] "2011" "2011" "2013" "2013" ...
+##   .. ..$ id_lattes_aluno            : chr [1:15] "" "3289800404391423" "" "1811065164099319" ...
+##   .. ..$ nome_aluno                 : chr [1:15] "Juan Fernando Díaz-Sánchez" "Renata Conciani" "Orly Tatiana Castaneda Rojas" "Ricardo Mendonça de Moraes" ...
+##   .. ..$ instituicao                : chr [1:15] "Universidade de Brasília" "Universidade de Brasília" "Universidade de Brasília" "Universidade de Brasília" ...
+##   .. ..$ curso                      : chr [1:15] "Geotecnia" "Geotecnia" "Geotecnia" "Geotecnia" ...
+##   .. ..$ codigo_do_curso            : chr [1:15] "51500329" "51500329" "51500329" "51500329" ...
+##   .. ..$ bolsa                      : chr [1:15] "SIM" "SIM" "SIM" "SIM" ...
+##   .. ..$ agencia_financiadora       : chr [1:15] "Conselho Nacional de Desenvolvimento Científico e Tecnológico" "Conselho Nacional de Desenvolvimento Científico e Tecnológico" "Conselho Nacional de Desenvolvimento Científico e Tecnológico" "Conselho Nacional de Desenvolvimento Científico e Tecnológico" ...
+##   .. ..$ codigo_agencia_financiadora: chr [1:15] "002200000000" "002200000000" "002200000000" "002200000000" ...
+##   .. ..$ nome_orientadores          :List of 15
+##   .. ..$ id_lattes_orientadores     :List of 15
+##   ..$ ORIENTACAO_CONCLUIDA_POS_DOUTORADO          :'data.frame':	1 obs. of  13 variables:
+##   .. ..$ natureza                   : chr "Supervisão de pós-doutorado"
+##   .. ..$ titulo                     : chr ""
+##   .. ..$ ano                        : chr "2017"
+##   .. ..$ id_lattes_aluno            : chr ""
+##   .. ..$ nome_aluno                 : chr "Luan Carlos de Sena Monteiro Ozelim"
+##   .. ..$ instituicao                : chr "Universidade de Brasília"
+##   .. ..$ curso                      : chr ""
+##   .. ..$ codigo_do_curso            : chr ""
+##   .. ..$ bolsa                      : chr "SIM"
+##   .. ..$ agencia_financiadora       : chr "Conselho Nacional de Desenvolvimento Científico e Tecnológico"
+##   .. ..$ codigo_agencia_financiadora: chr "002200000000"
+##   .. ..$ nome_orientadores          :List of 1
+##   .. ..$ id_lattes_orientadores     :List of 1
+##   ..$ ORIENTACAO_EM_ANDAMENTO_DOUTORADO           :'data.frame':	6 obs. of  13 variables:
+##   .. ..$ natureza                   : chr [1:6] "Tese de doutorado" "Tese de doutorado" "Tese de doutorado" "Tese de doutorado" ...
+##   .. ..$ titulo                     : chr [1:6] "Avaliação do Fluxo de Contaminantes em Sistemas de Drenagem construídos com Materiais Alternativos." "Modelagem do Fluxo saturado e não saturado em condições de colapso e expansão" "Análise hidromecânica acoplada transiente do fenômeno de centrifugação em meios porosos não saturados" "Consequência das Mudanças Climáticas no Transporte de Contaminantes em Águas Subterrâneas" ...
+##   .. ..$ ano                        : chr [1:6] "2014" "2016" "2017" "2017" ...
+##   .. ..$ id_lattes_aluno            : chr [1:6] "" "9492644429017937" "6392971663534518" "" ...
+##   .. ..$ nome_aluno                 : chr [1:6] "Silvana Fava Marchezini" "Lucas Parreira de Faria Borges" "Mateus Bezerra Alves da Costa" "Eliu James Carbajal Salinas" ...
+##   .. ..$ instituicao                : chr [1:6] "Universidade de Brasília" "Universidade de Brasília" "Universidade de Brasília" "Universidade de Brasília" ...
+##   .. ..$ curso                      : chr [1:6] "Geotecnia" "Geotecnia" "Geotecnia" "Geotecnia" ...
+##   .. ..$ codigo_do_curso            : chr [1:6] "51500329" "51500329" "51500329" "51500329" ...
+##   .. ..$ bolsa                      : chr [1:6] "SIM" "SIM" "SIM" "SIM" ...
+##   .. ..$ agencia_financiadora       : chr [1:6] "Conselho Nacional de Desenvolvimento Científico e Tecnológico" "Conselho Nacional de Desenvolvimento Científico e Tecnológico" "Conselho Nacional de Desenvolvimento Científico e Tecnológico" "Conselho Nacional de Desenvolvimento Científico e Tecnológico" ...
+##   .. ..$ codigo_agencia_financiadora: chr [1:6] "002200000000" "002200000000" "002200000000" "002200000000" ...
+##   .. ..$ nome_orientadores          :List of 6
+##   .. ..$ id_lattes_orientadores     :List of 6
+##   ..$ ORIENTACAO_EM_ANDAMENTO_GRADUACAO           :'data.frame':	2 obs. of  13 variables:
+##   .. ..$ natureza                   : chr [1:2] "Trabalho de conclusão de curso de graduação" "Trabalho de conclusão de curso de graduação"
+##   .. ..$ titulo                     : chr [1:2] "Experimento de Fluxo em Meio Poroso Artificial Gerado por Impressão 3D" "Estudo sobre Sorção Não Linear em Solos Lateríticos"
+##   .. ..$ ano                        : chr [1:2] "2017" "2017"
+##   .. ..$ id_lattes_aluno            : chr [1:2] "" ""
+##   .. ..$ nome_aluno                 : chr [1:2] "Nicholas Veres Barros" "Dhara Vieira Alcântara"
+##   .. ..$ instituicao                : chr [1:2] "Universidade de Brasília" "Universidade de Brasília"
+##   .. ..$ curso                      : chr [1:2] "Engenharia Civil" "Engenharia Civil"
+##   .. ..$ codigo_do_curso            : chr [1:2] "60070293" "60070293"
+##   .. ..$ bolsa                      : chr [1:2] "NAO" "NAO"
+##   .. ..$ agencia_financiadora       : chr [1:2] "" ""
+##   .. ..$ codigo_agencia_financiadora: chr [1:2] "" ""
+##   .. ..$ nome_orientadores          :List of 2
+##   .. ..$ id_lattes_orientadores     :List of 2
+##   ..$ ORIENTACAO_EM_ANDAMENTO_INICIACAO_CIENTIFICA:'data.frame':	6 obs. of  13 variables:
+##   .. ..$ natureza                   : chr [1:6] "Iniciação Científica" "Iniciação Científica" "Iniciação Científica" "Iniciação Científica" ...
+##   .. ..$ titulo                     : chr [1:6] "Fluxo de Água em Meio Poroso Artificial Gerado por Impressão 3D" "Proposta de Concepção de Ensaio de Permeabilidade de Grandes Dimensões" "Transporte de Contaminantes em Barragens de Rejeitos aplicando Transformações Conformes" "Proposta de Concepção de Modelo Físico para Colchão Drenante com Material Alternativo: Escória de Aciaria" ...
+##   .. ..$ ano                        : chr [1:6] "2017" "2017" "2017" "2017" ...
+##   .. ..$ id_lattes_aluno            : chr [1:6] "" "" "" "" ...
+##   .. ..$ nome_aluno                 : chr [1:6] "Nicholas Veres Barros" "Thália Raelly de Lima Meneses Romeiro" "André Luís de Alcântara Ramos" "Alexandre Rodarte Vieira de Sousa" ...
+##   .. ..$ instituicao                : chr [1:6] "Universidade de Brasília" "Universidade de Brasília" "Universidade de Brasília" "Universidade de Brasília" ...
+##   .. ..$ curso                      : chr [1:6] "Engenharia Civil" "Engenharia Civil" "Engenharia Civil" "Engenharia Civil" ...
+##   .. ..$ codigo_do_curso            : chr [1:6] "60070293" "60070293" "60070293" "60070293" ...
+##   .. ..$ bolsa                      : chr [1:6] "SIM" "NAO" "SIM" "NAO" ...
+##   .. ..$ agencia_financiadora       : chr [1:6] "Fundação de Apoio à Pesquisa do Distrito Federal" "" "Conselho Nacional de Desenvolvimento Científico e Tecnológico" "" ...
+##   .. ..$ codigo_agencia_financiadora: chr [1:6] "786500000001" "" "002200000000" "" ...
+##   .. ..$ nome_orientadores          :List of 6
+##   .. ..$ id_lattes_orientadores     :List of 6
+##   ..$ ORIENTACAO_EM_ANDAMENTO_MESTRADO            :'data.frame':	3 obs. of  13 variables:
+##   .. ..$ natureza                   : chr [1:3] "Dissertação de mestrado" "Dissertação de mestrado" "Dissertação de mestrado"
+##   .. ..$ titulo                     : chr [1:3] "Modelagem fracionária de fluxo de água em meio poroso não saturado" "Modelagem Probabilística do Potencial de Contaminação para uma Área de Disposição Inadequada de Resíduos Sólidos" "Estudo e Avaliação de Técnicas de Remediação para uma Região Potencialmente Contaminada"
+##   .. ..$ ano                        : chr [1:3] "2017" "2018" "2018"
+##   .. ..$ id_lattes_aluno            : chr [1:3] "" "" ""
+##   .. ..$ nome_aluno                 : chr [1:3] "Pedro Victor Serra Mascarenhas" "Mariana dos Santos Diniz" "Felipe Leite Nisiyama"
+##   .. ..$ instituicao                : chr [1:3] "Universidade de Brasília" "Universidade de Brasília" "Universidade de Brasília"
+##   .. ..$ curso                      : chr [1:3] "Geotecnia" "Geotecnia" "Geotecnia"
+##   .. ..$ codigo_do_curso            : chr [1:3] "51500329" "51500329" "51500329"
+##   .. ..$ bolsa                      : chr [1:3] "SIM" "SIM" "SIM"
+##   .. ..$ agencia_financiadora       : chr [1:3] "Conselho Nacional de Desenvolvimento Científico e Tecnológico" "Conselho Nacional de Desenvolvimento Científico e Tecnológico" "Conselho Nacional de Desenvolvimento Científico e Tecnológico"
+##   .. ..$ codigo_agencia_financiadora: chr [1:3] "002200000000" "002200000000" "002200000000"
+##   .. ..$ nome_orientadores          :List of 3
+##   .. ..$ id_lattes_orientadores     :List of 3
+##   ..$ OUTRAS_ORIENTACOES_CONCLUIDAS               :'data.frame':	57 obs. of  13 variables:
+##   .. ..$ natureza                   : chr [1:57] "INICIACAO_CIENTIFICA" "INICIACAO_CIENTIFICA" "INICIACAO_CIENTIFICA" "TRABALHO_DE_CONCLUSAO_DE_CURSO_GRADUACAO" ...
+##   .. ..$ titulo                     : chr [1:57] "Ensaios laboratoriais em geotecnia e aplicações da geometria fractal" "Ensaios laboratoriais em geotecnia e aplicações em lógica fuzzy" "Ensaios laboratoriais em geotecnia e aplicações dos autômatos celulares" "Asfalto Permeável para Solução de Problemas com Enchentes nas Cidades." ...
+##   .. ..$ ano                        : chr [1:57] "2010" "2010" "2010" "2010" ...
+##   .. ..$ id_lattes_aluno            : chr [1:57] "" "" "" "" ...
+##   .. ..$ nome_aluno                 : chr [1:57] "Pedro Henrique Lopes Batista" "Cristiano Nascimento Gouveia" "Diego Abreu Lemos" "Araujo, C. & Ribeiro, N.N." ...
+##   .. ..$ instituicao                : chr [1:57] "Universidade Católica de Brasília" "Universidade Católica de Brasília" "Universidade Católica de Brasília" "Universidade Católica de Brasília" ...
+##   .. ..$ curso                      : chr [1:57] "Engenharia Civil" "Engenharia Civil" "Engenharia Civil" "Engenharia Ambiental" ...
+##   .. ..$ codigo_do_curso            : chr [1:57] "90000020" "90000020" "90000020" "90000022" ...
+##   .. ..$ bolsa                      : chr [1:57] "SIM" "SIM" "NAO" "NAO" ...
+##   .. ..$ agencia_financiadora       : chr [1:57] "Universidade Católica de Brasília" "Universidade Católica de Brasília" "" "" ...
+##   .. ..$ codigo_agencia_financiadora: chr [1:57] "001000000998" "001000000998" "" "" ...
+##   .. ..$ nome_orientadores          :List of 57
+##   .. ..$ id_lattes_orientadores     :List of 57
+## $ senioridade           : chr "8"
+\end{verbatim}
+
+Uma breve inspeção visual dos atributos anteriormente apresentados
+permite inferir que o pesquisador sob análise pode ser inferir que o professor da área da engaranharia por formação, tendo geotécnica e fenômenos de transporte como sua subárea, especialidades em Geotecnia Ambiental e Mineração e Remediação de Áreas Contaminadas e atualmente trabalha no campus Darcy Ribeiro da UnB com uma senioridade de 8.
+
+\newpage
+\paragraph{Descrição dos dados de
+orientações}\label{descricao-dos-dados-de-orientacoes}
+
+Carregando os dados do arquivo de orientação de geotecnia, podemos as seguintes descrições:
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{advise <- }\StringTok{ }\KeywordTok{fromJSON}\NormalTok{(}\StringTok{"Geotecnia/advise.json"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Os tipos de orientação que estarão sob análise:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{names}\NormalTok{(advise)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "ORIENTACAO_EM_ANDAMENTO_DE_POS_DOUTORADO"     
+## [2] "ORIENTACAO_EM_ANDAMENTO_DOUTORADO"           
+## [3] "ORIENTACAO_EM_ANDAMENTO_MESTRADO"             
+## [4] "ORIENTACAO_EM_ANDAMENTO_GRADUACAO"           
+## [5] "ORIENTACAO_EM_ANDAMENTO_INICIACAO_CIENTIFICA" 
+## [6] "ORIENTACAO_CONCLUIDA_POS_DOUTORADO"          
+## [7] "ORIENTACAO_CONCLUIDA_DOUTORADO"               
+## [8] "ORIENTACAO_CONCLUIDA_MESTRADO"               
+## [9] "OUTRAS_ORIENTACOES_CONCLUIDAS"
+\end{verbatim}
+
+O período no qual será feita a análise:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{names}\NormalTok{(advise}\OperatorTok{$}\NormalTok{ORIENTACAO_CONCLUIDA_DOUTORADO)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "2010" "2011" "2012" "2013" "2014" "2015" "2016" "2017" "2018" "2019"
+\end{verbatim}
+
+A quantidade de orientações de doutorado concluídas em um ano específico (ex. 2016)
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{length}\NormalTok{(advise}\OperatorTok{$}\NormalTok{ORIENTACAO_CONCLUIDA_DOUTORADO}\OperatorTok{$}\StringTok{`}\DataTypeTok{2016}\StringTok{`}\OperatorTok{$}\NormalTok{natureza)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 14
+\end{verbatim}
+
+Quais os cursos que mais contribuíram com teses concluídas em doutorado em um ano específico (ex. 2017):
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{head}\NormalTok{(}\KeywordTok{sort}\NormalTok{(}\KeywordTok{table}\NormalTok{(advise}\OperatorTok{$}\NormalTok{ORIENTACAO_CONCLUIDA_DOUTORADO}\OperatorTok{$}\StringTok{`}\DataTypeTok{2017}\StringTok{`}\OperatorTok{$}\NormalTok{curso), }\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{), }\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Geotecnia 
+##        11 
+\end{verbatim}
+
+Quais os cursos que mais contribuíram com teses concluídas em mestrado em um ano específico (ex. 2017):
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{head}\NormalTok{(}\KeywordTok{sort}\NormalTok{(}\KeywordTok{table}\NormalTok{(advise}\OperatorTok{$}\NormalTok{ORIENTACAO_CONCLUIDA_MESTRADO}\OperatorTok{$}\StringTok{`}\DataTypeTok{2017}\StringTok{`}\OperatorTok{$}\NormalTok{curso), }\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{), }\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                                     Geotecnia        Programa de Pós-Graduação em Geotecnia 
+##                                            13                                             2 
+##                             Civil Engineering                         Mestrado em Geotecnia 
+##                                             1                                             1 
+## Mestrado Profissional em Engenharia Ambiental 
+##                                             1 
+\end{verbatim}
+
+\paragraph{Descrição dos dados de produção
+bibliográfica}\label{descricao-dos-dados-de-producao-bibliografica}
+
+Carregando os dados do arquivo de produção bibliográfica de Geotecnia, podemos as seguintes descrições:
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{publication <- }\StringTok{ }\KeywordTok{fromJSON}\NormalTok{(}\StringTok{"Engenharias I/publication.json"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Os tipos de produção bibliográfica a serem analisados nessa pesquisa:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{names}\NormalTok{(publication)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "PERIODICO"                              
+## [2] "LIVRO"                                 
+## [3] "CAPITULO_DE_LIVRO"                      
+## [4] "TEXTO_EM_JORNAIS"                      
+## [5] "EVENTO"                                 
+## [6] "ARTIGO_ACEITO"                         
+## [7] "DEMAIS_TIPOS_DE_PRODUCAO_BIBLIOGRAFICA"
+\end{verbatim}
+
+Os tipos de informação que cada periódico contém em um ano especifico (ex. 2012)
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{names}\NormalTok{(publication}\OperatorTok{$}\NormalTok{PERIODICO}\OperatorTok{$}\StringTok{`}\DataTypeTok{2012}\StringTok{`}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "natureza"         "titulo"           "periodico"        "ano"              "volume"          
+## [6] "issn"             "paginas"          "doi"              "autores"          "autores-endogeno"
+\end{verbatim}
+
+Os periódicos com maior número de publicações para cada programa em um
+determinado ano (ex. 2017). 
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{head}\NormalTok{(}\KeywordTok{sort}\NormalTok{(}\KeywordTok{table}\NormalTok{(publication}\OperatorTok{$}\NormalTok{PERIODICO}\OperatorTok{$}\StringTok{`}\DataTypeTok{2017}\StringTok{`}\OperatorTok{$}\NormalTok{periodico), }\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{), }\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##               Computational Particle Mechanics                                DYNA (MEDELLÍN) 
+##                                              3                                              2 
+##                      ENVIRONMENTAL GEOTECHNICS          International Journal of Geomechanics 
+##                                              2                                              2 
+##                                  SOILS & ROCKS                   Transportes (Rio de Janeiro) 
+##                                              2                                              2 
+##                    Boletim Goiano de Geografia                  CANADIAN GEOTECHNICAL JOURNAL 
+##                                              1                                              1 
+##                            Construção Magazine Electronic Journal of Geotechnical Engineering 
+##                                              1                                              1
+\end{verbatim}
+
+As editoras com maior número de publicações para cada programa em um
+determinado ano (ex. 2015):
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{head}\NormalTok{(}\KeywordTok{sort}\NormalTok{(}\KeywordTok{table}\NormalTok{(publication}\OperatorTok{$}\NormalTok{LIVRO}\OperatorTok{$}\StringTok{`}\DataTypeTok{2015}\StringTok{`}\OperatorTok{$}\NormalTok{nome_da_editora), }\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{), }\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## ABMS 
+##    1 
+\end{verbatim}
+
+\subsection{2.3 - Análise exploratória dos dados}\label{crisp-dm-fase.atividade-2.3---analise-exploratoria-dos-dados}
+
+A seguir será mostrado a análise exploratória dos dados nos datasets um entendimento de qualidade mais profundo da relação estatística existente para os objetivos do projeto.
+
+\paragraph{Arquivo Profile}\label{arquivo-profile}
+
+Número de áreas de atuação cumulativo:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sum}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{nrow}\NormalTok{(x}\OperatorTok{$}\NormalTok{areas_de_atuacao)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 63
+\end{verbatim}
+
+Número de pessoas por áreas de atuação:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{nrow}\NormalTok{(x}\OperatorTok{$}\NormalTok{areas_de_atuacao))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   3 4 5 6 
+##   1 2 2 7
+\end{verbatim}
+
+Número de pessoas por grande área:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) (x}\OperatorTok{$}\NormalTok{areas_de_atuacao}\OperatorTok{$}\NormalTok{grande_area))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## CIENCIAS_EXATAS_E_DA_TERRA CIENCIAS_SOCIAIS_APLICADAS                ENGENHARIAS 
+##                          5                          2                         56 
+\end{verbatim}
+
+Número de pessoas que produziram os específicos tipos de produção:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{names}\NormalTok{(x}\OperatorTok{$}\NormalTok{producao_bibiografica))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                          ARTIGO_ACEITO                      CAPITULO_DE_LIVRO 
+##                                      3                                      9 
+## DEMAIS_TIPOS_DE_PRODUCAO_BIBLIOGRAFICA                                 EVENTO 
+##                                      4                                     12 
+##                                  LIVRO                              PERIODICO 
+##                                      6                                     12 
+##                       TEXTO_EM_JORNAIS 
+##                                      5 
+\end{verbatim}
+
+Número de publicações por artigo aceito:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sum}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{length}\NormalTok{(x}\OperatorTok{$}\NormalTok{producao_bibiografica}\OperatorTok{$}\NormalTok{ARTIGO_ACEITO}\OperatorTok{$}\NormalTok{ano)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+
+Número de publicações por capítulo de livro:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sum}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{length}\NormalTok{(x}\OperatorTok{$}\NormalTok{producao_bibiografica}\OperatorTok{$}\NormalTok{CAPITULO_DE_LIVRO}\OperatorTok{$}\NormalTok{ano)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 68
+\end{verbatim}
+
+Número de publicações por livro:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sum}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{length}\NormalTok{(x}\OperatorTok{$}\NormalTok{producao_bibiografica}\OperatorTok{$}\NormalTok{LIVRO}\OperatorTok{$}\NormalTok{ano)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 14
+\end{verbatim}
+
+Número de publicações por periódico:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sum}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{length}\NormalTok{(x}\OperatorTok{$}\NormalTok{producao_bibiografica}\OperatorTok{$}\NormalTok{PERIODICO}\OperatorTok{$}\NormalTok{ano)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 201
+\end{verbatim}
+
+Número de publicações por texto em jornais:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sum}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{length}\NormalTok{(x}\OperatorTok{$}\NormalTok{producao_bibiografica}\OperatorTok{$}\NormalTok{TEXTO_EM_JORNAIS}\OperatorTok{$}\NormalTok{ano)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 14
+\end{verbatim}
+
+Número de pessoas por quantitativo de produções por artigo aceito:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{length}\NormalTok{(x}\OperatorTok{$}\NormalTok{producao_bibiografica}\OperatorTok{$}\NormalTok{ARTIGO_ACEITO}\OperatorTok{$}\NormalTok{ano))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 0 1 2 
+## 9 2 1
+\end{verbatim}
+
+Número de pessoas por quantitativo de produções por capítulo de livro:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{length}\NormalTok{(x}\OperatorTok{$}\NormalTok{producao_bibiografica}\OperatorTok{$}\NormalTok{CAPITULO_DE_LIVRO}\OperatorTok{$}\NormalTok{ano))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  0  1  2  5  6  8 38 
+##  3  3  1  1  2  1  1 
+\end{verbatim}
+
+Número de pessoas por quantitativo de produções por livro:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{length}\NormalTok{(x}\OperatorTok{$}\NormalTok{producao_bibiografica}\OperatorTok{$}\NormalTok{LIVRO}\OperatorTok{$}\NormalTok{ano))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  0 1 3 7 
+##  6 4 1 1 
+\end{verbatim}
+
+Número de pessoas por quantitativo de produções por periódico:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{length}\NormalTok{(x}\OperatorTok{$}\NormalTok{producao_bibiografica}\OperatorTok{$}\NormalTok{PERIODICO}\OperatorTok{$}\NormalTok{ano))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   3  5 14 15 26 27 31 32 
+##   2  2  2  1  2  1  1  1 
+\end{verbatim}
+
+Número de pessoas por quantitativo de produções por texto em jornais:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{length}\NormalTok{(x}\OperatorTok{$}\NormalTok{producao_bibiografica}\OperatorTok{$}\NormalTok{TEXTO_EM_JORNAIS}\OperatorTok{$}\NormalTok{ano))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  0 2 3 4 
+##  7 2 2 1 
+\end{verbatim}
+
+Número de produções de artigo aceito por ano:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) (x}\OperatorTok{$}\NormalTok{producao_bibiografica}\OperatorTok{$}\NormalTok{ARTIGO_ACEITO}\OperatorTok{$}\NormalTok{ano))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  2014 2018 
+##     1    3 
+\end{verbatim}
+
+Número de produções de capítulo de livro por ano:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) (x}\OperatorTok{$}\NormalTok{producao_bibiografica}\OperatorTok{$}\NormalTok{CAPITULO_DE_LIVRO}\OperatorTok{$}\NormalTok{ano))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  2012 2013 2014 2015 2016 2017 
+##    33    1    3   11    2   18 
+\end{verbatim}
+
+Número de produções de livro por ano:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) (x}\OperatorTok{$}\NormalTok{producao_bibiografica}\OperatorTok{$}\NormalTok{LIVRO}\OperatorTok{$}\NormalTok{ano))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  2010 2011 2012 2014 2015 2016 2017 
+##     2    1    3    1    1    2    4 
+\end{verbatim}
+
+Número de produções de periódico por ano:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) (x}\OperatorTok{$}\NormalTok{producao_bibiografica}\OperatorTok{$}\NormalTok{PERIODICO}\OperatorTok{$}\NormalTok{ano))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  2010 2011 2012 2013 2014 2015 2016 2017 2018 
+##    20   11   21   27   27   32   30   26    7
+\end{verbatim}
+
+Número de produções de texto em jornais por ano:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) (x}\OperatorTok{$}\NormalTok{producao_bibiografica}\OperatorTok{$}\NormalTok{TEXTO_EM_JORNAIS}\OperatorTok{$}\NormalTok{ano))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  2011 2012 2013 2014 2015 2016 
+##     2    2    3    1    1    5 
+\end{verbatim}
+
+Número de pessoas que realizaram diferentes tipos de orientações:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{length}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{names}\NormalTok{(x}\OperatorTok{$}\NormalTok{orientacoes_academicas))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 67
+\end{verbatim}
+
+Número de pessoas por tipo de orientação:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{names}\NormalTok{(x}\OperatorTok{$}\NormalTok{orientacoes_academicas))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                ORIENTACAO_CONCLUIDA_DOUTORADO                ORIENTACAO_CONCLUIDA_MESTRADO 
+##                                            11                                           12 
+##           ORIENTACAO_CONCLUIDA_POS_DOUTORADO            ORIENTACAO_EM_ANDAMENTO_DOUTORADO 
+##                                            4                                           11 
+##             ORIENTACAO_EM_ANDAMENTO_GRADUACAO ORIENTACAO_EM_ANDAMENTO_INICIACAO_CIENTIFICA 
+##                                             1                                            6 
+##              ORIENTACAO_EM_ANDAMENTO_MESTRADO                OUTRAS_ORIENTACOES_CONCLUIDAS 
+##                                            10                                           12 
+\end{verbatim}
+
+Número de orientações concluídas em mestrado:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sum}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{length}\NormalTok{(x}\OperatorTok{$}\NormalTok{orientacoes_academicas}\OperatorTok{$}\NormalTok{ORIENTACAO_CONCLUIDA_MESTRADO}\OperatorTok{$}\NormalTok{ano)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 153
+\end{verbatim}
+
+Número de orientações concluídas em doutorado:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sum}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{length}\NormalTok{(x}\OperatorTok{$}\NormalTok{orientacoes_academicas}\OperatorTok{$}\NormalTok{ORIENTACAO_CONCLUIDA_DOUTORADO}\OperatorTok{$}\NormalTok{ano)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 89
+\end{verbatim}
+
+Número de orientações concluídas em pós-doutorado:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sum}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{length}\NormalTok{(x}\OperatorTok{$}\NormalTok{orientacoes_academicas}\OperatorTok{$}\NormalTok{ORIENTACAO_CONCLUIDA_POS_DOUTORADO}\OperatorTok{$}\NormalTok{ano)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 6
+\end{verbatim}
+
+Número de pessoas por quantitativo de orientações concluídas em mestrado:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{length}\NormalTok{(x}\OperatorTok{$}\NormalTok{orientacoes_academicas}\OperatorTok{$}\NormalTok{ORIENTACAO_CONCLUIDA_MESTRADO}\OperatorTok{$}\NormalTok{ano))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   6  7  8 10 11 12 13 15 19 25 
+##   1  1  1  1  1  2  1  2  1  1 
+\end{verbatim}
+
+Número de pessoas por quantitativo de orientações concluídas em doutorado:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{length}\NormalTok{(x}\OperatorTok{$}\NormalTok{orientacoes_academicas}\OperatorTok{$}\NormalTok{ORIENTACAO_CONCLUIDA_DOUTORADO}\OperatorTok{$}\NormalTok{ano))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   0  1  5  7  8  9 10 11 12 13 
+##   1  1  2  1  2  1  1  1  1  1 
+\end{verbatim}
+
+Número de pessoas por quantitativo de orientações concluídas em pós-doutorado:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{length}\NormalTok{(x}\OperatorTok{$}\NormalTok{orientacoes_academicas}\OperatorTok{$}\NormalTok{ORIENTACAO_CONCLUIDA_POS_DOUTORADO}\OperatorTok{$}\NormalTok{ano))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  0 1 2 
+##  8 2 2 
+\end{verbatim}
+
+Número de orientações em mestrado por ano:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) (x}\OperatorTok{$}\NormalTok{orientacoes_academicas}\OperatorTok{$}\NormalTok{ORIENTACAO_CONCLUIDA_MESTRADO}\OperatorTok{$}\NormalTok{ano))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  2010 2011 2012 2013 2014 2015 2016 2017 2018 
+##     8   19   20   21   16   20   25   19    5 
+\end{verbatim}
+
+Número de orientações em doutorado por ano:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) (x}\OperatorTok{$}\NormalTok{orientacoes_academicas}\OperatorTok{$}\NormalTok{ORIENTACAO_CONCLUIDA_DOUTORADO}\OperatorTok{$}\NormalTok{ano))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  2010 2011 2012 2013 2014 2015 2016 2017 
+##     5    8   11   12   13   14   14   12 
+\end{verbatim}
+
+Número de orientações em pós-doutorado por ano:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(}\KeywordTok{unlist}\NormalTok{(}\KeywordTok{sapply}\NormalTok{(profile, }\ControlFlowTok{function}\NormalTok{(x) (x}\OperatorTok{$}\NormalTok{orientacoes_academicas}\OperatorTok{$}\NormalTok{ORIENTACAO_CONCLUIDA_POS_DOUTORADO}\OperatorTok{$}\NormalTok{ano))))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  2010 2015 2016 2017 
+##     3    1    1    1 
+\end{verbatim}
+
+\paragraph{Arquivo Publicação}\label{arquivo-publicacao}
+
+Criando um data-frame com todos os anos:
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{publication.df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{()}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(publication[[}\DecValTok{1}\NormalTok{]]))}
+\NormalTok{  publication.df <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(publication.df, publication}\OperatorTok{$}\NormalTok{PERIODICO[[i]])}
+\KeywordTok{glimpse}\NormalTok{(publication.df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  Observations: 171
+##  Variables: 10
+##  $ natureza           <chr> "COMPLETO", "COMPLETO", "COMPLETO", "COMPLETO", "COMPLETO", "COMPLETO", "COMPLETO", "COMPLETO", "COMPLE...
+##  $ titulo             <chr> "Metodologia para o controle de qualidade dos estaqueamentos tipo hélice contínua - A rotina SCCAP", "M...
+##  $ periodico          <chr> "Revista Fundações e Obras Geotécnicas", "Revista Fundações e Obras Geotécnicas", "Acta Biologica Colom...
+##  $ ano                <chr> "2010", "2010", "2010", "2010", "2010", "2010", "2010", "2010", "2010", "2010", "2010", "2010", "2010",...
+##  $ volume             <chr> "1", "01", "15", "34", "4", "17", "28", "33", "17", "17", "28", "47", "11", "5", "33", "47", "27", "15"...
+##  $ issn               <chr> "21780668", "21780668", "0120548X", "03703908", "19099363", "10726349", "02661144", "19809743", "107263...
+##  $ paginas            <chr> "50 - 57", "50 - 57", "16880 - ", "209 - 227", "23 - 29", "34 - 47", "136 - 148", "33 - 44", "228 - 241...
+##  $ doi                <chr> "", "", "", "", "", "10.1680/gein.2010.17.1.34", "10.1016/j.geotexmem.2009.10.004", "", "10.1680/gein.2...
+##  $ autores            <list> [<"SILVA, Carlos Medeiros", "CAMAPUM DE CARVALHO, J.;DE CARVALHO, JOSÉ CAMAPUM;CARVALHO, JOSÉ CAMAPUM ...
+##  $ `autores-endogeno` <list> [<"2245433059787601", "2245433059787601">, <"2245433059787601", "2245433059787601">, "2409917419986324...
+\end{verbatim}
+
+Limpando o data-frame de listas:
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{publication.df}\OperatorTok{$}\NormalTok{autores <-}\StringTok{ }\KeywordTok{gsub}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}"}\StringTok{,}\CharTok{\textbackslash{}"}\StringTok{|}\CharTok{\textbackslash{}"}\StringTok{, }\CharTok{\textbackslash{}"}\StringTok{"}\NormalTok{, }\StringTok{"; "}\NormalTok{, publication.df}\OperatorTok{$}\NormalTok{autores)}
+\NormalTok{publication.df}\OperatorTok{$}\NormalTok{autores <-}\StringTok{ }\KeywordTok{gsub}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}"}\StringTok{|c}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{(|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{)"}\NormalTok{, }\StringTok{""}\NormalTok{, publication.df}\OperatorTok{$}\NormalTok{autores)}
+\NormalTok{publication.df}\OperatorTok{$}\StringTok{`}\DataTypeTok{autores-endogeno}\StringTok{`}\NormalTok{ <-}\StringTok{ }\KeywordTok{gsub}\NormalTok{(}\StringTok{","}\NormalTok{, }\StringTok{";"}\NormalTok{, publication.df}\OperatorTok{$}\StringTok{`}\DataTypeTok{autores-endogeno}\StringTok{`}\NormalTok{)}
+\NormalTok{publication.df}\OperatorTok{$}\StringTok{`}\DataTypeTok{autores-endogeno}\StringTok{`}\NormalTok{ <-}\StringTok{ }\KeywordTok{gsub}\NormalTok{(}\StringTok{"}\CharTok{\textbackslash{}"}\StringTok{|c}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{(|}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{)"}\NormalTok{, }\StringTok{""}\NormalTok{, publication.df}\OperatorTok{$}\StringTok{`}\DataTypeTok{autores-endogeno}\StringTok{`}\NormalTok{)}
+\KeywordTok{glimpse}\NormalTok{(publication.df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  Observations: 171
+##  Variables: 10
+##  $ natureza           <chr> "COMPLETO", "COMPLETO", "COMPLETO", "COMPLETO", "COMPLETO", "COMPLETO", "COMPLETO", "COMPLETO", "COMPLE...
+##  $ titulo             <chr> "Metodologia para o controle de qualidade dos estaqueamentos tipo hélice contínua - A rotina SCCAP", "M...
+##  $ periodico          <chr> "Revista Fundações e Obras Geotécnicas", "Revista Fundações e Obras Geotécnicas", "Acta Biologica Colom...
+##  $ ano                <chr> "2010", "2010", "2010", "2010", "2010", "2010", "2010", "2010", "2010", "2010", "2010", "2010", "2010",...
+##  $ volume             <chr> "1", "01", "15", "34", "4", "17", "28", "33", "17", "17", "28", "47", "11", "5", "33", "47", "27", "15"...
+##  $ issn               <chr> "21780668", "21780668", "0120548X", "03703908", "19099363", "10726349", "02661144", "19809743", "107263...
+##  $ paginas            <chr> "50 - 57", "50 - 57", "16880 - ", "209 - 227", "23 - 29", "34 - 47", "136 - 148", "33 - 44", "228 - 241...
+##  $ doi                <chr> "", "", "", "", "", "10.1680/gein.2010.17.1.34", "10.1016/j.geotexmem.2009.10.004", "", "10.1680/gein.2...
+##  $ autores            <chr> "SILVA, Carlos Medeiros; CAMAPUM DE CARVALHO, J.;DE CARVALHO, JOSÉ CAMAPUM;CARVALHO, JOSÉ CAMAPUM DE;CA...
+##  $ `autores-endogeno` <chr> "2245433059787601; 2245433059787601", "2245433059787601; 2245433059787601", "2409917419986324", "240991...
+\end{verbatim}
+
+\paragraph{Arquivo Orientação}\label{arquivo-orientacao}
+
+Reunir todos os anos e orientações concluidas em um mesmo data-frame:
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{advise.tipo.df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(); advise.df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{()}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(advise[[}\DecValTok{1}\NormalTok{]]))}
+\NormalTok{  advise.tipo.df <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(advise.tipo.df, advise}\OperatorTok{$}\NormalTok{ORIENTACAO_CONCLUIDA_POS_DOUTORADO[[i]])}
+\NormalTok{advise.df <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(advise.df, advise.tipo.df); advise.tipo.df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{()}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(advise[[}\DecValTok{1}\NormalTok{]]))}
+\NormalTok{  advise.tipo.df <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(advise.tipo.df, advise}\OperatorTok{$}\NormalTok{ORIENTACAO_CONCLUIDA_DOUTORADO[[i]])}
+\NormalTok{advise.df <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(advise.df, advise.tipo.df); advise.tipo.df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{()}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\OperatorTok{:}\KeywordTok{length}\NormalTok{(advise[[}\DecValTok{1}\NormalTok{]]))}
+\NormalTok{  advise.tipo.df <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(advise.tipo.df, advise}\OperatorTok{$}\NormalTok{ORIENTACAO_CONCLUIDA_MESTRADO[[i]])}
+\NormalTok{advise.df <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(advise.df, advise.tipo.df)}
+\KeywordTok{glimpse}\NormalTok{(advise.df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  Observations: 226
+##  Variables: 13
+##  $ natureza                    <chr> "Supervisão de pós-doutorado", "Supervisão de pós-doutorado", "Supervisão de pós-doutorado", "...
+##  $ titulo                      <chr> "ESTUDO DA MELHORIA DE UM SOLO TROPICAL A PARTIR DE TÉCNICAS BIOTECNOLÓGICAS UTILIZADAS EM CAM...
+##  $ ano                         <chr> "2010", "2010", "2010", "2015", "2016", "2017", "2010", "2010", "2010", "2010", "2011", "2011"...
+##  $ id_lattes_aluno             <chr> "", "", "", "", "", "", "9633327128695181", "", "3750805445037630", "5255221517816363", "12226...
+##  $ nome_aluno                  <chr> "Yamile Valencia González", "Raul Dario Durand Farfan", "André Luís Brasil Cavalcante", "Sergi...
+##  $ instituicao                 <chr> "Universidade de Brasília", "Universidade de Brasília", "Universidade de Brasília", "Universid...
+##  $ curso                       <chr> "", "", "", "", "", "", "Geotecnia", "Geotecnia", "Geotecnia", "Geotecnia", "Geotecnia", "Geot...
+##  $ codigo_do_curso             <chr> "", "", "", "", "", "", "51500329", "51500329", "51500329", "51500329", "51500329", "51500329"...
+##  $ bolsa                       <chr> "SIM", "SIM", "SIM", "SIM", "SIM", "SIM", "SIM", "NAO", "SIM", "NAO", "NAO", "SIM", "SIM", "SI...
+##  $ agencia_financiadora        <chr> "Conselho Nacional de Desenvolvimento Científico e Tecnológico", "Conselho Nacional de Desenvo...
+##  $ codigo_agencia_financiadora <chr> "002200000000", "002200000000", "002200000000", "045000000000", "002200000000", "002200000000"...
+##  $ nome_orientadores           <list> ["Jose Camapum de Carvalho", "Jose Camapum de Carvalho", "Ennio Marques Palmeira", "Luis Fern...
+##  $ id_lattes_orientadores      <list> ["2245433059787601", "2245433059787601", "3468455656914958", "4739413536925106", "34684556569...
+\end{verbatim}
+
+Numero de orientações por ano:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{table}\NormalTok{(advise.df}\OperatorTok{$}\NormalTok{ano)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  2010 2011 2012 2013 2014 2015 2016 2017 2018 
+##    13   25   26   32   26   29   40   30    5
+\end{verbatim}
+
+Tabela com nome de professor e numero de orientações:
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{head}\NormalTok{(}\KeywordTok{sort}\NormalTok{(}\KeywordTok{table}\NormalTok{(}\KeywordTok{rbind}\NormalTok{(advise.df}\OperatorTok{$}\NormalTok{ori1, advise.df}\OperatorTok{$}\NormalTok{ori2)), }\DataTypeTok{decreasing =} \OtherTok{TRUE}\NormalTok{), }\DecValTok{20}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           André Pacheco de Assis           Ennio Marques Palmeira         Jose Camapum de Carvalho     André Luís Brasil Cavalcante 
+##                               32                               31                               23                               21 
+##            Renato Pinto da Cunha Hernán Eduardo Martínez Carvajal      Manoel Porfirio Cordão Neto           Marcio Muniz de Farias 
+##                               21                               20                               20                               20 
+##    Luis Fernando Martins Ribeiro          Newton Moreira de Souza   Juan Felix Rodriguez Rebolledo       Gregorio Luis Silva Araujo 
+##                               14                               10                                8                                7 
+##       Gregorio Luis Silva Araujo           Marcio Muniz de Farias          Newton Moreira de Souza           André Pacheco de Assis 
+##                                6                                5                                4                                2 
+##         Jose Camapum de Carvalho    Luis Fernando Martins Ribeiro      Manoel Porfirio Cordão Neto            Renato Pinto da Cunha 
+##                                1                                1                                1                                1
+\end{verbatim}
+
+\subsection{2.4 - Verificação da qualidade dos
+dados}\label{crisp-dm-fase.atividade-2.4---verificacao-da-qualidade-dos-dados.}
+
+Com os dados coletados na seção 2.3 tem-se que os dados para serem submetidos a uma análise apresentam uma qualidade satisfatória para resolver os problemas propostos.
