@@ -1,0 +1,1591 @@
+---
+title: Ciência de Dados para Todos (Data Science For All) - 2019.2 - Análise da Produção
+  Científica e Acadêmica da Universidade de Brasília - Relatório do Programa de Pós Graduação em Geotecnia - 
+  Departamento de Ciência da Computação da UnB - Período 2010 a 2018
+author: "Luan Mendes Gonçalves Freitas - 15/0015585"
+date: "26/11/2019"
+output:
+  pdf_document:
+    df_print: paged
+    fig_caption: yes
+    keep_tex: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+  html_document:
+    df_print: paged
+    keep_tex: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    fig_caption: yes
+header-includes:
+  - \usepackage{graphicx}
+  - \usepackage{url}
+  - \usepackage{float}
+  - \usepackage{listings}
+  - \usepackage{color}
+  - \usepackage{colortbl}
+  - \usepackage{multirow}
+  - \usepackage{todonotes}
+  - \usepackage{algorithmic}
+  - \usepackage{algorithm}
+  - \usepackage{hyperref}
+  - \usepackage{enumitem}
+  - \usepackage{multirow}
+  - \usepackage{indentfirst}
+  - \usepackage{multicol,lipsum}
+  - \usepackage{natbib}
+  - \usepackage{lscape}
+  - \usepackage{mathtools}
+  - \usepackage{amsmath}
+  - \usepackage{longtable}
+  - \setlength{\parindent}{2em}
+bibliography: bibliography.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(error = FALSE)
+```
+
+\newpage
+# Introdução
+
+Este relatório apresenta uma análise da produção científica e acadêmica de dados coletados da CAPES (Coordenação de Aperfeiçoamento de Pessoal de Nível Superior), à respeito de programas de pós-graduação da disciplina Tópicos Avançados em Computadores Data Science For All (Ciência de Dados para Todos) - Turma D - 2019.2, ministrada por Jorge Henrique Cabral Fernandes e Ricardo Barros Sampaio, do Departamento de Ciência da Computação da Universidade de Brasília.
+
+O tema de estudo escolhido para realização da prática de ciência de dados foi o cenário atual da Pós-Graduação Brasileira, para que seus dados sejam processados e estudados com o objetivo de se retirar análises a respeito da qualidade, relevância, e produtividade dos programas de pós-graduação brasileiros.
+
+Órgão Capes Sucupira já coleta informações, para realizar análises e avaliações e ser a base de referência do Sistema Nacional de Pós-Graduação (SNPG). A Plataforma disponibiliza em tempo real e com muito mais transparência as informações, processos e procedimentos que a CAPES realiza no SNPG para toda a comunidade acadêmica. Igualmente, a Plataforma propiciará a parte gerencial-operacional de todos os processos e permitirá maior participação das pró-reitorias e coordenadores de programas de pós-graduação [@sucupira].
+
+O tema de estudo escolhido tem como objetivo apresentar as análises descritivas, quantitativas e de modelagem realizadas dos programas de pós-graduações da brasileira, seguindo o modelo de metodologia CRISP-DM. O programa escolhido é \textbf{Geotecnia (53001010032P2)} da área de conhecimento de Engenharias I [@sucupira_geotecnia].
+
+
+# Metodologia
+
+## O que é ciência?
+
+Ciência é o conhecimento que explica os fenômenos obedecendo a leis que foram verificadas por métodos experimentais. Aristóteles define a ciência como o "conhecimento das causas pelas causas. É o conhecimento demonstrativo".
+
+A ciência é composta por três componentes: a observação, a experimentação e as leis. Visa a união entre o conhecimento teórico, a prática e a técnica. Não se utiliza de suposições, mas da comprovação após a aplicação do método científico.
+
+Foi o próprio Aristóteles quem definiu que as ciências (no plural) estão relacionadas à maneira de realização do ideal de cientificidade de acordo com os fatos investigados e os métodos empregados [@ciencia].
+
+## O que é ciência no Brasil?
+
+Diz-se que o sistema de ciência e tecnologia do Brasil começa oficialmente com o CNPq (Conselho Nacional de Desenvolvimento Científico e Tecnológico), criado em 1951 para incentivar nosso progresso na área. Claro, já havia antes instituições de destaque: do Observatório Nacional no Rio (ainda do tempo do Império) às universidades federal do Rio de Janeiro (UFRJ) e estadual de São Paulo (USP), fundadas em 1920 e 1934. De qualquer forma, trata-se de uma história muito jovem. Basta lembrar que os Estados Unidos viram sua prestigiosa Universidade Harvard surgir em 1636. Ou seja: estamos correndo atrás, e não faz pouco tempo. A boa notícia é que nos últimos 20 anos a coisa finalmente parece ter engrenado.
+
+Passamos da 21ª para a 13ª posição no ranking mundial de produção científica e levantamentos já indicam que o Brasil responde por 2,7\% dos trabalhos científicos publicados no mundo (em 1994, era apenas 0,7\%). "Se for pensar que o PIB do Brasil [Produto Interno Bruto, soma de todas as riquezas produzidas pelo país em um ano] representa cerca de 2,9\% do mundo, você vê que nossa ciência já atingiu um tamanho proporcional à nossa economia", diz Marco Antonio Raupp, ministro da Ciência, Tecnologia e Inovação. Em evento recente na Sociedade Brasileira para o Progresso da Ciência (SBPC), Raupp mostrou que os investimentos do governo na área foram de R\$ 1,1 bilhão em 2000 para R\$ 12,7 bilhões em 2013. "Nunca antes na história desse país, como costuma dizer nosso ex-presidente", brincou o ministro.
+
+Mas nem tudo são flores. Pra começar, a parcela do PIB investida em pesquisa e desenvolvimento, 1,16\%, ainda é pequena se comparada com a de nações desenvolvidas como a Alemanha (2,7\%) ou EUA (2,8\%) - e não vem crescendo expressivamente na última década. Isso deixa muito trabalho bom de fora. "Se a taxa de projetos aprovados no CNPq é de 50\% e a taxa de financiados é de 20\%, nos sentimos no direito de pleitear mais", diz Helena Nader, presidente da SBPC.
+
+Além do dinheiro, há entraves puramente burocráticos. Não à toa está entre as prioridades do governo fazer aprovar no Congresso Nacional um Código Nacional de Ciência, Tecnologia e Inovação. Trata-se de um conjunto de leis que deve resolver alguns desses problemas - mas não todos. Até mesmo o ex-jogador e deputado federal Romário de Souza Faria (PSB-RJ) anda enchendo a bola dos cientistas, com um projeto de lei para facilitar as importações, uma das piores vias-crúcis de quem quer fazer pesquisa de ponta no país. São sinais alvissareiros: pouco a pouco, os freios da ciência nacional começam a ser colocados de lado, após décadas de protestos dos meios acadêmicos.
+
+Mas há muito a ser feito: de facilitar o acesso de cientistas a recursos a fazer o governo se mexer quando surgem oportunidades em parcerias científicas internacionais. Neste Dossiê, mostramos algumas das principais dificuldades ainda enfrentadas pelos pesquisadores brasileiros, e como o país se prepara para lidar com elas.
+
+## O que é CRISP-DM?
+\textbf{CRISP-DM} (Cross-Industry Standard Process for Data Mining) é um modelo de análise de mineração de dados, feita de forma sistemática, sendo amplamente utilizada por ser flexível, podendo ser aplicada em qualquer negócio, e sua execução não ser dependente de ferramentas [@crispdm]. As fases que compõem o CRISP-DM são descritas abaixo e exemplificadas na figura \ref{diagramaCRISPDM} :
+
+* Entendimento do negócio: foca em entender o objetivo do projeto a partir de uma perspectiva
+de negócios, definindo um plano preliminar para atingir os objetivos. Pode ser subdividido em três
+atividades:
+  + Definir objetivos: Descrever seu objetivo principal a partir de uma perspectiva de negócios.
+  + Produzir plano de projeto: Descrever o plano para atingir os objetivos de mineração de dados e negócios.
+  + Critérios de sucesso nos negócios: Defenir os critérios que serão usados para determinar se o projeto foi bem-sucedido do ponto de vista comercial
+
+* Entendimento dos dados: Recolhimento de dados e inicio de atividades para familiarização com os
+dados, identificando problemas ou conjuntos interessantes. Pode ser subdividido em cinco atividades:
+  + Coleta dos dados: Liste as fontes de dados adquiridas juntamente com seus locais, os métodos usados para adquiri-las e quaisquer problemas encontrados.
+  + Descrição dos dados: Descrever os dados que foram adquiridos, incluindo seu formato, sua quantidade (por exemplo, o número de registros e campos em cada tabela)
+  + Exploração dos dados: Descrever os resultados de sua exploração de dados, incluindo as primeiras descobertas ou hipóteses iniciais e seu impacto no restante do projeto.
+  + Qualidade dos dados: Analisar a qualidade dos dados recolhidos.
+
+* Preparação dos dados: Construção do conjunto de dados final a partir dos dados iniciais. Normalmente
+ocorre várias vezes no processo. Pode ser subdividido em cinco atividades:
+  + Seleção dos dados: Liste os dados a serem incluídos / excluídos e os motivos dessas decisões.
+  + Limpeza dos dados: Descrever quais decisões e ações você tomou para solucionar problemas de qualidade de dados. 
+  + Construção dos dados: Descrever operações construtivas de preparação de dados, como a produção de atributos derivados ou novos registros inteiros ou valores transformados para atributos existentes.
+  + Integração dos dados: Integre fontes e armazene o resultado (novas tabelas e registros).
+  + Formatação dos dados: Organização e alterações na estrutura de dados para adequação ao método
+de data mining escolhido.
+
+* Modelagem: Árias técnicas de modelagem são aplicadas, e seus parâmetros calibrados para otimização.
+Assim, é comum retornar à Preparação dos Dados durante essa fase. Pode ser dividido em quatro atividades:
+  + Seleção das técnicas de modelagem: Escolher e ajustar os parâmetros do algoritmo a ser utilizado.
+  + Realização de testes de modelagem: Descrever o plano pretendido para treinar, testar e avaliar os modelos
+  + Modelo de construção: Definir parâmetros iniciais e motivos do documento para escolher esses valores.
+  + Avaliação do modelo: Avalie o resultado com relação aos critérios de avaliação. Classifique os resultados com relação aos critérios de sucesso e avaliação e selecione os melhores modelos.
+
+* Avaliação: É construído um modelo que parece ter grande qualidade de uma perspectiva de análise de dados. No entanto, é necessário verificar se o modelo atinge os objetivos do negócio. Pode ser dividido em quarto atividades:
+  + Avalie os resultados: entenda o resultado da mineração de dados. Verifique o impacto da meta de mineração de dados.
+  + Revisão do processo: Resuma a revisão do processo (atividades que foram perdidas ou devem ser repetidas)
+  + Determine as próximas etapas: Analise o potencial de implantação de cada resultado. Estimar o potencial de melhoria do processo atual.
+  + Decisão: De acordo com os resultados e a revisão do processo, é decidido como proceder para a próxima etapa (recursos e orçamento restantes)
+
+* Implantação: O conhecimento adquirido pelo modelo é organizado e apresentado de uma maneira que
+o cliente possa utilizar.
+  + Planejar a implantação: Identifique possíveis problemas ao: implantar os resultados da mineração de dados
+  + Planejar monitoramento e manutenção: O que poderia mudar no ambiente? Como a precisão será monitorada?
+  + Produzir um relatório final: Identificar os relatórios necessários (apresentação de slides, resumo de gerenciamento, descobertas detalhadas, explicação de modelos etc.). Quão bem os objetivos iniciais de mineração de dados foram alcançados.
+  + Revisão do projeto: Entrevistar as pessoas envolvidas no projeto. Entreviste usuários finais. O que poderia ter sido feito melhor? Eles precisam de suporte adicional? Resuma o feedback e escreva a documentação da experiência
+
+![Diagrama da CRISP-DM \label{diagramaCRISPDM} @bharat_crispdm_2019](crispdm.jpeg) 
+
+\newpage
+
+# Fase 1 - Entendimento do Negócio
+
+## O que é o Sistema Nacional de Pós-Graduação? (Contextualização)
+
+O Sistema de Avaliação da Pós-graduação foi implantado pela CAPES em 1976 e desde então vem cumprindo papel de fundamental importância para o desenvolvimento da pós-graduação e da pesquisa científica e tecnológica no Brasil. Abrange dois processos conduzidos por comissões de consultores do mais alto nível, vinculados a instituições de ensino das diferentes regiões do país: a Avaliação das Propostas de Cursos Novos e a Avaliação dos Programas de Pós-graduação [@capes].
+
+A Avaliação das Propostas de Cursos Novos é parte do rito estabelecido para a admissão de novos programas e cursos como integrantes do Sistema Nacional de Pós-graduação, SNPG. Ao avaliar as propostas de cursos novos, a CAPES verifica a qualidade de tais propostas e se elas atendem ao padrão de qualidade requerido desse nível de formação. Os resultados desse processo são encaminhados ao Conselho Nacional de Educação para fundamentar a deliberação desse órgão sobre o reconhecimento dos novos cursos.
+
+A Avaliação dos Programas de Pós-graduação compreende os processos de Acompanhamento Anual e de Avaliação Trienal do desempenho dos programas e cursos que integram o Sistema Nacional de Pós-graduação, SNPG.
+
+O Acompanhamento Anual é realizado no período compreendido entre os anos de realização das avaliações trienais. Tem por objetivo o estabelecimento de um diálogo entre a CAPES e as instituições promotoras de cursos de mestrado e doutorado com vistas à orientação da atuação dos programas de forma que possam elevar a qualidade de seu desempenho e superar os problemas que eventualmente estejam a enfrentar - se possível antes da Avaliação Trienal subseqüente. O Acompanhamento não implica na atribuição de conceitos aos programas, mas apenas na apresentação de um parecer com os comentários considerados pertinentes pela Comissão de Área, e não enseja que seus resultados sejam contestados mediante a apresentação de recursos ou pedidos de reconsideração.
+
+A Avaliação Trienal é realizada ao final de cada triênio, sendo o ano de sua realização estabelecido pela seqüência histórica do processo de avaliação da CAPES. Os resultados da avaliação de cada programa são apresentados na "Ficha de Avaliação" definida pelo CTC, de que constam, no que se refere aos vários quesitos e itens avaliados, os atributos a ele consignados, com os respectivos comentários e justificativas da comissão avaliadora, e, ao final, o conceito correspondente ao seu desempenho no triênio, na escala de 1 a 7 adotada. Tais resultados podem ser contestados pelas instituições de ensino mediante a apresentação de recurso contra a decisão inicial comunicada pela CAPES e, uma vez homologados pelo Ministro da Educação, são válidos até a homologação dos resultados da Avaliação Trienal subseqüente. Os resultados da Avaliação Trienal realizada pela CAPES, além de indicarem a qualidade do desempenho e a posição relativa de cada programa no contexto de sua respectiva área, servem de referência para as decisões dos órgãos governamentais de investimento na pesquisa e na pós-graduação e fundamentam as deliberações do Conselho Nacional de Educação sobre quais cursos de mestrado e de doutorado obterão, para vigência no triênio seguinte, a renovação de seu "reconhecimento".
+
+## A UnB dentro do Sistema Nacional de Pós-Graduação (Contextualização)
+
+Historicamente, o desenvolvimento da ciência na UnB é realizado nas unidades acadêmicas com apoio, acompanhamento e supervisão do Decanato de Pesquisa e Pós-Graduação (DPP). A atuação do decanato promove todas as áreas do conhecimento com o auxílio de diretorias específicas para pesquisa, desenvolvimento institucional e inovação e iniciação científica [@unb].
+
+Para estimular a pesquisa e a inovação e tornar a Universidade de Brasília uma referência na área, foi criado, no início de 2017, o Decanato de Pesquisa e Inovação (DPI). Com a mudança, o DPP passou a se chamar Decanato de Pós-Graduação (DPG). A intenção é que as pró-reitorias somem expertises em seus respectivos setores de atuação e possam conduzir a UnB adiante na produção científica.  
+
+Editais próprios e de agências de fomento como CNPq, Capes e FAPDF são responsáveis por financiar parte significativa das pesquisas na Universidade. O DPG anuncia em sua página as publicações internas e as principais chamadas públicas que podem beneficiar a comunidade científica com a concessão de aportes financeiros, equipamentos, bolsas e realização e participação em eventos científicos.
+
+Algumas das principais definições estratégicas para o progresso da ciência na UnB são realizadas no Conselho de Ensino, Pesquisa e Extensão (Cepe), com apoio da Câmara de Pesquisa e Pós-Graduação (CPP). Essas estruturas colegiadas permitem decisões democráticas com participação ativa dos segmentos interessados.
+
+De acordo com a plataforma sucupira, existem 97 programas em funcionamento na Universidade de Brasília
+no momento. As notas por programa se separam da seguinte maneira:
+
+* 5 programas com nota 7: Antropologia, Desenvolvimento Sustentável, Geologia, Matemática e Sociologia.
+* 10 programas com nota 6: Geotecnia, Ciência Política, Ciências Biológicas (Biologia Molecular), Direito e outros.
+* 18 programas com nota 5: Administração, Administração (pública), Bioética, Ciências animais, Ciências da informação, Ciências da saúde e outros.
+* 46 programas com nota 4: Ensino de Ciências Ambientais em Rede Nacional, Agronegócios, Agronomia, Arquitetura E Urbanismo, Artes, Artes Cênicas, Biologia Animal, Biologia Microbiana e outros.
+
+\newpage
+# Fase 2 - Entendimento dos Dados
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+source("elattes.ls2df.R")
+```
+
+
+## Coleta inicial dos dados
+Os arquivos json para análise foram fornecidos na plataforma unb.elattes da UnB, que disponibiliza de forma acessível informações relevantes dos programas avaliados. Os dados fornecem informações entre os anos de 2010 e 2018 [@unb_elattes_2011].
+
+
+**Perfil profissional dos docentes vinculados às pós-graduações**
+```{r, warning=FALSE, message=FALSE}
+file.info("Geotecnia/profile.json")
+```
+
+O arquivo profile.json apresenta dados sobre o perfil de todos os docentes vinculados a programas de
+pós-graduação da UnB, entre 2010 e 2018. Esse arquivo foi fornecido pelos docentes responsáveis pela
+disciplina.
+
+**Orientações de mestrado e doutorado realizadas pelos docentes vinculados às pós-graduações**
+```{r, warning=FALSE, message=FALSE}
+file.info("Geotecnia/advise.json")
+```
+
+O arquivo advise.json apresenta dados sobre o orientações de mestrado e doutorado feitas por todos os
+docentes vinculados a programas de pós-graduação da UnB, entre 2010 e 2018. Esse arquivo foi fornecido
+pelos docentes responsáveis pela disciplina.
+
+**Produção bibliográfica gerada pelos docentes vinculados às pós-graduações**
+```{r, warning=FALSE, message=FALSE}
+file.info("Geotecnia/publication.json")
+```
+
+O arquivo publication.json apresenta dados sobre a produção bibliográfica gerada por todos os docentes
+vinculados a programas de pós-graduação da UnB, entre 2010 e 2018.
+
+**Agrupamento dos docentes conforme áreas de atuação**
+```{r, warning==FALSE, message=FALSE}
+file.info("Geotecnia/graph.json")
+```
+
+O arquivos graph.json de Geotecnia apresenta redes de colaboração na co-autoria de artigos científicos, feitas
+entre os docentes vinculados a programas de pós-graduação da UnB, entre 2010 e 2018.
+
+## Descrição dos Dados
+
+Para ler, manipular, analisar e visualizar estes dados, serão utilizadas as seguintes bibliotecas:
+```{r warning=FALSE, message=FALSE}
+library(tidyverse)
+library(jsonlite)
+library(listviewer)
+library(scales)
+library(dplyr)
+library(readxl)
+library(readr)
+library(readtext)
+library(ggplot2)
+library(igraph)
+library(knitr)
+library(tm)
+library(SnowballC)
+library(qdap)
+library(wordcloud)
+```
+Com essas bibliotecas habilitadas será possível de responder e determinar qual o volume de dados, a estrutura
+dos dados (tipos), codificações usadas, entre outras atividades importantes para análise dos dados.
+
+**Descrição dos dados do perfil**
+
+O arquivo profile.json, que contém dados que caracterizam o perfil profissional de todos os docentes do grupo
+sob análise, podem ser lido por meio do comando seguinte:
+```{r, message=FALSE}
+perfis <- fromJSON("Geotecnia/profile.json")
+```
+A quantidade de docentes de Geotecnia sob análise é apresentada a seguir.
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+length(perfis)
+```
+
+Para apresentar os dados que estão contido nos dados de perfil dos docentes, vamos usar a função glimpse, da
+biblioteca dplyr, como ilustra o código seguinte, que apresenta os atributos típicos que podem ser obtidos
+relativamente a um pesquisador específico, o mais antigo docente ainda em exercício na UnB a ter criado seu
+registro na plataforma unb.elattes.
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+glimpse(perfis[[1]], width = 30)
+```
+
+Uma breve inspeção visual dos atributos anteriormente apresentados permite inferir que o pesquisador sob
+análise pode ser inferir que o professor da área da engaranharia por formação, tendo geotécnica e fenômenos
+de transporte como sua subárea, especialidades em Geotecnia Ambiental e Mineração e Remediação de Áreas
+Contaminadas e atualmente trabalha no campus Darcy Ribeiro da UnB com uma senioridade de 8.
+
+**Descrição dos dados de orientações**
+
+Carregando os dados do arquivo de orientação de geotecnia, podemos as seguintes descrições:
+```{r, message=FALSE}
+orientacoes <- fromJSON("Geotecnia/advise.json")
+```
+
+Os tipos de orientação que estarão sob análise:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+names(orientacoes)
+```
+
+O período no qual será feita a análise de orientação concluida doutorado:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+names(orientacoes$ORIENTACAO_CONCLUIDA_DOUTORADO)
+```
+
+A quantidade de orientações de doutorado concluídas no ano 2016:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+length(orientacoes$ORIENTACAO_CONCLUIDA_DOUTORADO$`2016`$natureza)
+```
+
+Quais os cursos que mais contribuíram com teses concluídas em doutorado no ano 2017:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+head(sort(
+  table(orientacoes$ORIENTACAO_CONCLUIDA_DOUTORADO$`2017`$curso),
+  decreasing = TRUE
+), 10)
+```
+
+Quais os cursos que mais contribuíram com teses concluídas em mestrado no ano 2017:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+head(sort(
+  table(orientacoes$ORIENTACAO_CONCLUIDA_MESTRADO$`2017`$curso),
+  decreasing = TRUE
+), 10)
+```
+
+**Descrição dos dados de produção bibliográfica**
+
+Carregando os dados do arquivo de produção bibliográfica de Geotecnia, podemos as seguintes descrições:
+```{r, message=FALSE}
+publicacoes <- fromJSON("Geotecnia/publication.json")
+```
+
+Os tipos de produção bibliográfica a serem analisados nessa pesquisa:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+names(publicacoes)
+```
+
+Os tipos de informação que cada periódico contém no ano 2012:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+names(publicacoes$PERIODICO$`2012`)
+```
+
+Os periódicos com maior número de publicações para cada programa no ano 2017:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+head(sort(table(publicacoes$PERIODICO$`2017`$periodico), decreasing = TRUE), 10)
+```
+
+As editoras com maior número de publicações para cada programa no ano 2015:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+head(sort(
+  table(publicacoes$LIVRO$`2015`$nome_da_editora),
+  decreasing = TRUE
+), 10)
+```
+
+## Análise exploratória dos dados
+A seguir será mostrado a análise exploratória dos dados nos datasets um entendimento de qualidade mais
+profundo da relação estatística existente para os objetivos do projeto.
+
+### Arquivo Perfil
+
+Número de áreas de atuação cumulativo:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+sum(sapply(perfis, function(x)
+  nrow(x$areas_de_atuacao)))
+```
+
+Número de pessoas por áreas de atuação:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  names(x$areas_de_atuacao))))
+```
+
+Número de pessoas por grande área:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  (x$areas_de_atuacao$grande_area))))
+```
+
+Número de pessoas por área:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  (x$areas_de_atuacao$area))))
+```
+
+Número de pessoas por sub área:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  (x$areas_de_atuacao$sub_area))))
+```
+
+Número de pessoas por especialidade:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  (x$areas_de_atuacao$especialidade))))
+```
+
+Número de pessoas que produziram os específicos tipos de produção:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  names(x$producao_bibiografica))))
+```
+
+Número de publicações por artigo aceito:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+sum(sapply(perfis, function(x)
+  length(x$producao_bibiografica$ARTIGO_ACEITO$ano)))
+```
+
+Número de publicações por capítulo de livro:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+sum(sapply(perfis, function(x)
+  length(x$producao_bibiografica$CAPITULO_DE_LIVRO$ano)))
+```
+
+Número de publicações por livro:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+sum(sapply(perfis, function(x)
+  length(x$producao_bibiografica$LIVRO$ano)))
+```
+
+Número de publicações por periódico:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+sum(sapply(perfis, function(x)
+  length(x$producao_bibiografica$PERIODICO$ano)))
+```
+
+Número de publicações por texto em jornais:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+sum(sapply(perfis, function(x)
+  length(x$producao_bibiografica$TEXTO_EM_JORNAIS$ano)))
+```
+
+Número de pessoas por quantitativo de produções por artigo aceito:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  length(x$producao_bibiografica$ARTIGO_ACEITO$ano))))
+```
+
+Número de pessoas por quantitativo de produções por capítulo de livro:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  length(x$producao_bibiografica$CAPITULO_DE_LIVRO$ano))))
+```
+
+Número de pessoas por quantitativo de produções por livro:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  length(x$producao_bibiografica$LIVRO$ano))))
+```
+
+Número de pessoas por quantitativo de produções por periódico:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  length(x$producao_bibiografica$PERIODICO$ano))))
+```
+
+Número de pessoas por quantitativo de produções por texto em jornais:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  length(x$producao_bibiografica$TEXTO_EM_JORNAIS$ano))))
+```
+
+Número de produções de artigo aceito por ano:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  (x$producao_bibiografica$ARTIGO_ACEITO$ano))))
+```
+
+Número de produções de capítulo de livro por ano:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  (x$producao_bibiografica$CAPITULO_DE_LIVRO$ano))))
+```
+
+Número de produções de livro por ano:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  (x$producao_bibiografica$LIVRO$ano))))
+```
+
+Número de produções de periódico por ano:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  (x$producao_bibiografica$PERIODICO$ano))))
+```
+
+Número de produções de texto em jornais por ano:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  (x$producao_bibiografica$TEXTO_EM_JORNAIS$ano))))
+```
+
+Número de pessoas que realizaram diferentes tipos de orientações:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+length(unlist(sapply(perfis, function(x)
+  names(x$orientacoes_academicas))))
+```
+
+Número de pessoas por tipo de orientação:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  names(x$orientacoes_academicas))))
+```
+
+Número de orientações concluídas em mestrado:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+sum(sapply(perfis, function(x)
+  length(x$orientacoes_academicas$ORIENTACAO_CONCLUIDA_MESTRADO$ano)))
+```
+
+Número de orientações concluídas em doutorado:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+sum(sapply(perfis, function(x)
+  length(
+    x$orientacoes_academicas$ORIENTACAO_CONCLUIDA_DOUTORADO$ano
+  )))
+```
+
+Número de orientações concluídas em pós-doutorado:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+sum(sapply(perfis, function(x)
+  length(
+    x$orientacoes_academicas$ORIENTACAO_CONCLUIDA_POS_DOUTORADO$ano
+  )))
+```
+
+Número de pessoas por quantitativo de orientações concluídas em mestrado:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  length(x$orientacoes_academicas$ORIENTACAO_CONCLUIDA_MESTRADO$ano))))
+```
+
+Número de pessoas por quantitativo de orientações concluídas em doutorado:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  length(
+    x$orientacoes_academicas$ORIENTACAO_CONCLUIDA_DOUTORADO$ano
+  ))))
+```
+
+Número de pessoas por quantitativo de orientações concluídas em pós-doutorado:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  length(
+    x$orientacoes_academicas$ORIENTACAO_CONCLUIDA_POS_DOUTORADO$ano
+  ))))
+```
+
+Número de orientações em mestrado por ano:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  (x$orientacoes_academicas$ORIENTACAO_CONCLUIDA_MESTRADO$ano))))
+```
+
+Número de orientações em doutorado por ano:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  (
+    x$orientacoes_academicas$ORIENTACAO_CONCLUIDA_DOUTORADO$ano
+  ))))
+```
+
+Número de orientações em pós-doutorado por ano:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(unlist(sapply(perfis, function(x)
+  (
+    x$orientacoes_academicas$ORIENTACAO_CONCLUIDA_POS_DOUTORADO$ano
+  ))))
+```
+
+### Arquivo Publicação
+Criando um data-frame com todos os anos:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+dataFramePublicacoes <- data.frame()
+for (i in 1:length(publicacoes[[1]]))
+  dataFramePublicacoes <-
+  rbind(dataFramePublicacoes, publicacoes$PERIODICO[[i]])
+glimpse(dataFramePublicacoes)
+```
+
+Limpando sinais de pontuação descessrios como "\<" e outros no data-frame de listas:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+dataFramePublicacoes$autores <-
+  gsub("\",\"|\", \"", "; ", dataFramePublicacoes$autores)
+dataFramePublicacoes$autores <-
+  gsub("\"|c\\(|\\)", "", dataFramePublicacoes$autores)
+dataFramePublicacoes$`autores-endogeno` <-
+  gsub(",", ";", dataFramePublicacoes$`autores-endogeno`)
+dataFramePublicacoes$`autores-endogeno` <-
+  gsub("\"|c\\(|\\)", "", dataFramePublicacoes$`autores-endogeno`)
+glimpse(dataFramePublicacoes)
+```
+
+### Arquivo Orientação
+
+Reunir todos os anos e orientações concluidas em um mesmo data-frame:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+dataframeTipoOrientacoes <- data.frame()
+dataframeOrientacoes <- data.frame()
+for (i in 1:length(orientacoes[[1]]))
+  dataframeTipoOrientacoes <-
+  rbind(dataframeTipoOrientacoes,
+        orientacoes$ORIENTACAO_CONCLUIDA_POS_DOUTORADO[[i]])
+dataframeOrientacoes <-
+  rbind(dataframeOrientacoes, dataframeTipoOrientacoes)
+dataframeTipoOrientacoes <- data.frame()
+for (i in 1:length(orientacoes[[1]]))
+  dataframeTipoOrientacoes <-
+  rbind(dataframeTipoOrientacoes,
+        orientacoes$ORIENTACAO_CONCLUIDA_DOUTORADO[[i]])
+dataframeOrientacoes <-
+  rbind(dataframeOrientacoes, dataframeTipoOrientacoes)
+dataframeTipoOrientacoes <- data.frame()
+for (i in 1:length(orientacoes[[1]]))
+  dataframeTipoOrientacoes <-
+  rbind(dataframeTipoOrientacoes,
+        orientacoes$ORIENTACAO_CONCLUIDA_MESTRADO[[i]])
+dataframeOrientacoes <-
+  rbind(dataframeOrientacoes, dataframeTipoOrientacoes)
+glimpse(dataframeOrientacoes)
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+#Transformar as colunas de listas em caracteres eliminando c("")
+dataframeOrientacoes$nome_orientadores <-
+  gsub("\"|c\\(|\\)", "", dataframeOrientacoes$nome_orientadores)
+dataframeOrientacoes$id_lattes_orientadores <-
+  gsub("\"|c\\(|\\)",  "",   dataframeOrientacoes$id_lattes_orientadores)
+
+#Separar as colunas com dois orientadores
+dataframeOrientacoes <-
+  separate(
+    dataframeOrientacoes,
+    nome_orientadores,
+    into = c("ori1", "ori2"),
+    sep = ","
+  )
+
+dataframeOrientacoes <-
+  separate(
+    dataframeOrientacoes,
+    id_lattes_orientadores,
+    into = c("idLattes1", "idLattes2"),
+    sep = ","
+  )
+```
+
+
+Numero de orientações por ano:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+table(dataframeOrientacoes$ano)
+```
+
+Tabela com nome de professor e numero de orientações:
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+head(sort(table(
+  rbind(dataframeOrientacoes$ori1, dataframeOrientacoes$ori2)
+), decreasing = TRUE), 20)
+```
+
+## Verificação da qualidade dos dados
+Com os dados coletados na seção 2.3 tem-se que os dados para serem submetidos a uma análise apresentam
+uma qualidade satisfatória para resolver os problemas propostos.
+
+\newpage
+# Fase 3 - Preparação dos Dados
+
+Nessa fase são realizadas 5 atividades genéricas para de preparação dos dados
+
+## Seleção dos dados.
+
+Para a principal utilização dos dados foram definidos os dataframes advise, que contém informações de qual a
+natureza da pesquisa produzida, qual aluno produziu, seus respectivos orientadores, o ano e etc. A seguir foi
+definido os dados importantes do arquivo profile.json, gerando o mais dataframes, chamados de profile, que já
+está limpo, com as principais colunas definidas.
+
+## Limpeza dos dados
+
+Nessa etapa se anexa com a próxima etapa a construção dos dados. Durante a construção, foi realizada uma
+limpeza dos dados.
+
+## Construção dos dados
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+# extrai perfis dos professores
+dataFrameProfessores <- extrai.perfis(perfis)
+
+# extrai producao bibliografica de todos os professores
+dataFramePublicacoes <- extrai.producoes(perfis) %>%
+  select(tipo_producao, everything()) %>% arrange(tipo_producao)
+
+dataFramePublicacoes$tipo_producao[grepl("DEMAIS", dataFramePublicacoes$tipo_producao)] <-"OUTRAS_PRODUCOES"
+
+#extrai orientacoes
+dataFrameOrientacoes <- extrai.orientacoes(perfis) %>%
+  select(id_lattes_orientadores,
+         natureza,
+         ano,
+         orientacao,
+         everything()) %>%
+  mutate(Status = ifelse(grepl("CONCLUIDA", orientacao), "Concluída", "Em andamento")) %>%
+  mutate(
+    Natureza = case_when(
+      grepl("MESTRADO", str_to_upper(natureza)) ~ "Mestrado",
+      grepl("PÓS-DOUTORADO", str_to_upper(natureza)) ~ "Pós-doutorado",
+      grepl("DOUTORADO", str_to_upper(natureza)) ~ "Doutorado",
+      grepl("INICIACAO", str_to_upper(natureza)) ~ "Iniciação Científica",
+      grepl("INICIAÇÃO", str_to_upper(natureza)) ~ "Iniciação Científica",
+      TRUE ~ "Outras naturezas"
+    )
+  )
+
+#extrai areas
+dataFrameAreasAtuacao <- extrai.areas.atuacao(perfis) %>%
+  select(idLattes, everything())
+```
+
+
+Na etapa construção dos dados é realizada criação de novas variáveis a partir de outras presentes nos datasets
+para anáslise.
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+
+dataFramePerfis <- data.frame()
+dataFramePerfis <- dataFrameProfessores %>%
+  select(idLattes, nome, resumo_cv, senioridade) %>%
+  left_join(
+    dataFrameOrientacoes %>%
+      select(orientacao, idLattes) %>%
+      filter(!grepl("EM_ANDAMENTO", orientacao)) %>%
+      group_by(idLattes) %>%
+      count(orientacao) %>%
+      spread(key = orientacao, value = n),
+    by = "idLattes"
+  ) %>%
+  left_join(
+    dataFramePublicacoes %>%
+      select(tipo_producao, idLattes) %>%
+      filter(!grepl("ARTIGO_ACEITO", tipo_producao)) %>%
+      group_by(idLattes) %>%
+      count(tipo_producao) %>%
+      spread(key = tipo_producao, value = n),
+    by = "idLattes"
+  ) %>%
+  left_join(
+    dataFrameAreasAtuacao %>%
+      select(area, idLattes) %>%
+      group_by(idLattes) %>%
+      summarise(num_areas = n_distinct(area)),
+    by = "idLattes"
+  )
+glimpse(dataFramePerfis)
+```
+
+## Integração dos dados
+Não havia necessidade de realizar integração entre os dados, somente realizada a construção dos dataframes
+como descrito na etapa 3.3.
+
+## Formatação dos dados
+A formatação dos dados já foi realizada nas etapas anteriores.Para esses casos mais simples, a formatação
+será realizada conforme a necessidade.
+
+\newpage
+# Fase 4 - Modelagem
+Com os dados preparados, na fase de modelagem várias técnicas de modelagem são selecionadas e aplicadas e
+seus parâmetros são calibrados. Usualmente, mais de uma técnica pode ser aplicado ao conjunto de dados
+disponível, ou uma técnica requer um formato específico dos dados, necessitando nova preparação dos dados.
+Uma estrategia comum é dividir o conjunto de dados, utilizando uma porção dos dados para o desenvolvimento
+do modelo e outra para o teste do modelo obtido. Em alguns casos, utiliza-se uma terceira porção dos dados
+para validação.
+
+\newpage
+
+## Análise de Redes
+A Análise de Redes é a área de tecnologia da informação e das ciências sociais que trata do processo de
+analisar qualquer tipo de rede por meio da teoria das redes. As redes podem ser social, de transporte ou
+tecnológicas, como a internet.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+grafos <- fromJSON("Geotecnia/graph.json")
+igraph <- g.ls2ig(grafos)
+
+geotecniaNodes <- grafos$nodes
+geotecniaLinks <- grafos$links
+colnames(geotecniaNodes) <- c("IdLattes",
+                              "Index",
+                              "Docente")
+
+V(igraph)$orient_dout <- dataFramePerfis$ORIENTACAO_CONCLUIDA_DOUTORADO
+V(igraph)$orient_mest <- dataFramePerfis$ORIENTACAO_CONCLUIDA_MESTRADO
+V(igraph)$publicacao <- dataFramePerfis$PERIODICO
+V(igraph)$eventos <- dataFramePerfis$EVENTO
+
+V(igraph)$degree <- degree(igraph)
+V(igraph)$betweenness <- betweenness(igraph, normalized = TRUE)
+V(igraph)$closeness <- closeness(igraph, normalized = TRUE)
+V(igraph)$eigen <- eigen_centrality(igraph)$vector
+V(igraph)$cluster <- cluster_leading_eigen(igraph)$membership
+```
+
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+kable(geotecniaNodes[, c(2, 1, 3)], caption = "Tabela de Docente para análise de redes")
+```
+
+
+O igrafo ilustra que todos os 12 pesquisadores trabalham em conjunto, nenhum docente fica isolado dos outros. Foi possível perceber que os pesquisadores 1 e 3 são os que mais se relacionam com os demais pesquisadores. Por outro lado, percebe-se que os pesquisadores 5 e 9 são os que menos se relacionam. Na linguagem da Teoria dos Grafos, o grau de um vértice é o número de arestas que incidem sobre o vértice. Portanto, podemos dizer que o vértices 1 possui grau 9, o vértice 3 tem grau 6, enquanto os vértices 5 e 9 possuem grau 2.
+
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "IGrafo de Relacionametos dos Docentes de Geotecnia", fig.pos = 'H', out.width = "80%"}
+plot(igraph, vertex.label = geotecniaNodes$Index)
+```
+
+\newpage
+O igrafo ilustra as comunidades entre os docentes com clusters (agrupamentos). Podemos concluir com a análise das redes do programa de pós-graduação em Geotecnia que há colaboração e agrupamento entre todos pesquisadores. 
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "IGrafo com Comunidades entre os Docentes de Geotecnia", fig.pos = 'H'}
+grafosComunidades = fastgreedy.community(igraph)
+
+# Comunidades geradas pelas colaborações
+plot(
+  grafosComunidades,
+  igraph,
+  vertex.label = geotecniaNodes$Index,
+  layout = layout_nicely(igraph)
+)
+```
+
+\newpage
+## Mineração de Textos
+
+A coleta de dados realizada para a produção das nuvens de palavras foi feita utilizando os curriculos dos perfis dos docentes e os títulos de publicações. Para refinar essa análise, utilizamos alguns filtros para remover pontuações, conectivos e palavras indesejadas. O tamanho da palavra indica a frequência que ela é utilizada nos documentos, ou seja, quanto maior tamanho da palavra mais frequentemente é usada. 
+
+As cores das palavras a seguir indicam o seguinte: Vermelho - Alta Frequência; Azul - Maior Frequência; Verde - Normal; Amarelo - Menos Frequênte; Marrom - Baixa Frequência.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+cores <- c('chocolate', 'gold', 'forestgreen', 'blue', 'red')
+
+limparCorpus <- function(x) {
+  corpusLimpo <- x %>%
+    tm_map(content_transformer(tolower)) %>%
+    tm_map(stripWhitespace) %>%
+    tm_map(removePunctuation) %>%
+    tm_map(removeWords, stopwords("en")) %>%
+    tm_map(removeWords, stopwords("pt")) %>%
+    tm_map(
+      removeWords,
+      c(
+        "brasil",
+        "brazil",
+        "geotecnia",
+        "engenharia",
+        "civil",
+        "sobre",
+        "n",
+        "vol",
+        "pesquisa",
+        "universidade",
+        "sobre",
+        "unb",
+        "mestrado",
+        "doutorado",
+        "professor",
+        "graduação"
+      )
+    )
+  return(corpusLimpo)
+}
+
+obterCurriculos <- function(dataFrameProfessores) {
+  curriculos <- c()
+  for (i in 1:nrow(dataFrameProfessores)) {
+    curriculos[[i]] <- dataFrameProfessores$resumo_cv[[i]]
+  }
+  return(curriculos)
+}
+
+obterTitulos <- function(dataFramePublicacoes) {
+  titulos <- c()
+  for (i in 1:nrow(dataFramePublicacoes)) {
+    if (is.na(dataFramePublicacoes$titulo[[i]])) {
+      titulos[[i]] <- dataFramePublicacoes$titulo_do_livro[[i]]
+    }
+    else{
+      titulos[[i]] <- dataFramePublicacoes$titulo[[i]]
+    }
+  }
+  return(titulos)
+}
+
+
+```
+
+
+Analisando os currículos dos professores as palavras que sempre aparece nos documentos são "brasília" e "solos".
+
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Nuvem de Palavras Frequentes entre os Perfis de Geotecnia", fig.pos = 'H'}
+
+curriculos <- obterCurriculos(dataFrameProfessores)
+
+## criar o corpus
+corpusCurriculos <- VCorpus(VectorSource(curriculos))
+corpusCurriculos <- limparCorpus(corpusCurriculos)
+
+curriculosTDM <- TermDocumentMatrix(corpusCurriculos)
+curriculosMatriz <- as.matrix(curriculosTDM)
+
+
+curriculosSomaTermos <- rowSums(curriculosMatriz)
+curriculosSomaTermos <- sort(curriculosSomaTermos, decreasing = TRUE)
+
+
+termos <- names(curriculosSomaTermos)
+frequencia <- curriculosSomaTermos
+dataFramePalavrasPerfil <- data.frame(termos, frequencia)
+
+## nuvem de palavras para visualizar as palavras mais frequentes
+wordcloud(
+  dataFramePalavrasPerfil$termos,
+  dataFramePalavrasPerfil$frequencia,
+  scale = c(4, 0.25),
+  max.words = 200,
+  random.order = FALSE,
+  rot.per = 0.5,
+  use.r.layout = FALSE,
+  colors = cores
+)
+
+```
+
+\newpage
+Analisando as publicações dos professores as palavras que sempre aparece nos documentos são "análise", "solo" e "solos".
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Nuvem de Palavras Frequentes entre os Titulos de Publicações de Geotecnia", fig.pos = 'H'}
+titulos <- obterTitulos(dataFramePublicacoes)
+
+##criar o corpus
+corpusTitulos <- VCorpus(VectorSource(titulos))
+corpusTitulos <- limparCorpus(corpusTitulos)
+
+titulosTDM <- TermDocumentMatrix(corpusTitulos)
+titulosMatriz <- as.matrix(titulosTDM)
+
+
+titulosSomaTermos <- rowSums(titulosMatriz)
+titulosSomaTermos <- sort(titulosSomaTermos, decreasing = TRUE)
+
+
+termos <- names(titulosSomaTermos)
+frequencia <- titulosSomaTermos
+dataFramePalavrasTitulos <- data.frame(termos, frequencia)
+
+wordcloud(
+  dataFramePalavrasTitulos$termos,
+  dataFramePalavrasTitulos$frequencia,
+  scale = c(4, 0.25),
+  max.words = 200,
+  random.order = FALSE,
+  rot.per = 0.5,
+  use.r.layout = FALSE,
+  colors = cores
+)
+```
+
+
+\newpage
+# Fase 5 - Avaliação
+A fase de avaliação consiste na verificação de questões em relação aos datasets que ainda não foram abordadas o suficiente. Dessa forma, consiste em uma análise mais "profunda", por assim dizer, dos dados em questão. 
+
+## Avaliação dos resultados
+
+A avaliação foi realizada de forma gráfica, sendo apresentados a seguir.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+grandeAreasAtuacao <- perfis %>%
+  sapply(function(x)
+    unique(x$areas_de_atuacao$grande_area)) %>%
+  unlist() %>% table() %>% sort(decreasing = TRUE) %>%
+  as.data.frame() %>% filter(!. == "")
+
+quantidadeGrandeAreasAtuacao <- sum(grandeAreasAtuacao$Freq)
+grandeAreasAtuacao <-
+  mutate(
+    grandeAreasAtuacao,
+    percent = round(grandeAreasAtuacao$Freq / quantidadeGrandeAreasAtuacao * 100,
+                    0)
+  )
+colnames(grandeAreasAtuacao) <-
+  c("GrandeAreas", "Quantidade", "Porcentagem")
+
+areasAtuacao <- perfis %>%
+  sapply(function(x)
+    unique(x$areas_de_atuacao$area)) %>%
+  unlist() %>% table() %>% sort(decreasing = TRUE) %>%
+  as.data.frame() %>% filter(!. == "")
+
+quantidadeAreasAtuacao <- sum(areasAtuacao$Freq)
+areasAtuacao <-
+  mutate(areasAtuacao,
+         percent = round(areasAtuacao$Freq / quantidadeAreasAtuacao * 100, 0))
+colnames(areasAtuacao) <- c("Areas", "Quantidade", "Porcentagem")
+
+subArea <- perfis %>%
+  sapply(function(x)
+    (x$areas_de_atuacao$sub_area)) %>%
+  unlist() %>% table() %>%
+  sort(decreasing = TRUE) %>%   as.data.frame() %>%
+  filter(!. == "") %>% head(6)
+
+quantidadeSubArea <- sum(subArea$Freq)
+subArea <-
+  mutate(subArea, percent = round(subArea$Freq / quantidadeSubArea * 100, 0))
+colnames(subArea) <- c("subArea", "Quantidade", "Porcentagem")
+
+especialidadesFrequentes <- perfis %>%
+  sapply(function(x)
+    unique(x$areas_de_atuacao$especialidade)) %>%
+  unlist() %>% table() %>% sort(decreasing = TRUE) %>%
+  as.data.frame() %>% filter(!. == "") %>% head(10)
+
+quantidadeEspecialidades <- sum(especialidadesFrequentes$Freq)
+especialidadesFrequentes <-
+  mutate(
+    especialidadesFrequentes,
+    percent = round(
+      especialidadesFrequentes$Freq / quantidadeEspecialidades * 100,
+      0
+    )
+  )
+colnames(especialidadesFrequentes) <-
+  c("Especialidade", "Quantidade", "Porcentagem")
+
+dataFrameAreas <- dataFrameAreasAtuacao %>%
+  left_join(dataFramePerfis, by = "idLattes") %>%
+  rowwise() %>% #realizar sum() corretamente
+  mutate(
+    orientacoes_concluidas = sum(
+      ORIENTACAO_CONCLUIDA_DOUTORADO,
+      ORIENTACAO_CONCLUIDA_POS_DOUTORADO,
+      ORIENTACAO_CONCLUIDA_MESTRADO,
+      OUTRAS_ORIENTACOES_CONCLUIDAS,
+      na.rm = TRUE
+    )
+  ) %>%
+  mutate(
+    publicacoes = sum(
+      CAPITULO_DE_LIVRO,
+      EVENTO,
+      PERIODICO,
+      LIVRO,
+      TEXTO_EM_JORNAIS,
+      OUTRAS_PRODUCOES,
+      na.rm = TRUE
+    )
+  ) %>%
+  select(
+    idLattes,
+    grande_area,
+    area,
+    sub_area,
+    especialidade,
+    orientacoes_concluidas,
+    publicacoes
+  )
+class(dataFrameAreas) <- c("tbl_df", "data.frame")
+```
+
+\newpage
+
+### Arquivo Perfil
+
+O gráficos ilustram a quantidade de professores por grande área de atuação (nas formas de colunas e pizza). Podemos observar que todos os 12 professores são da grande área de engenharias e apenas 29\% dos professores são de outras grandes áreas.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Pessoas por Grande Área Atuação (Grafico de Colunas)", fig.pos = 'H', out.width = "75%"}
+perfis %>%
+  sapply(function(x)
+    unique(x$areas_de_atuacao$grande_area)) %>%
+  unlist() %>% table() %>% sort() %>% as.data.frame() %>% filter(!. == "") %>%
+  ggplot(aes(x = ., y = Freq)) + geom_col(aes(fill = .),
+                                          alpha = 0.8,
+                                          width = 0.8) + coord_flip() + geom_text(aes(label = Freq),
+                                                                                  hjust = -0.2,
+                                                                                  vjust = 0.5,
+                                                                                  size = 3.5) +
+  labs(title = "Número de Pessoas por Grande Área Atuação", y = "Quantidade", x =
+         "Grande Área", fill = "Grande Área Atuação") + theme_bw() + scale_y_continuous() +
+  scale_x_discrete(
+    labels = c(
+      'CIENCIAS_DA_SAUDE' = 'Ciências da Saúde',
+      'CIENCIAS_BIOLOGICAS' = 'Ciências Biológicas',
+      'CIENCIAS_HUMANAS' = 'Ciências Humanas',
+      "CIENCIAS_EXATAS_E_DA_TERRA" = "Ciências Exatas e da Terra",
+      "CIENCIAS_SOCIAIS_APLICADAS" = "Ciências Sociais Aplicadas",
+      "CIENCIAS_AGRARIAS" = "Ciências Agrárias",
+      "OUTROS" = "Outros",
+      "ENGENHARIAS" = "Engenharias",
+      "LINGUISTICA_LETRAS_E_ARTES" = "Linguística, Letras e Artes"
+    )
+  )
+```
+
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Pessoas por Grande Área Atuação Atuação (Grafico de Pizza)", fig.pos = 'H', out.width = "75%"}
+ggplot(grandeAreasAtuacao,
+       aes(x = "", y = Quantidade, fill = GrandeAreas)) +
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y", start = 0, direction = -1) +
+  labs(title = "Número de Pessoas por Grande Área Atuação") +
+  geom_text(
+    data = grandeAreasAtuacao,
+    aes(
+      x = "",
+      y = Quantidade,
+      label = paste(Porcentagem, "%")
+    ),
+    position = position_stack(vjust = 0.5),
+    size = 3
+  ) 
+```
+
+\newpage
+O gráficos ilustram a quantidade de professores por área de atuação (em forma de colunas e pizza). Podemos observar que todos os 12 professores são da área de engenharia civil e apenas 37\% dos professores são de outras áreas. 
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Pessoas por Área Atuação (Grafico de Colunas)", fig.pos = 'H', out.width = "80%"}
+perfis %>%
+  sapply(function(x)
+    unique(x$areas_de_atuacao$area)) %>%
+  unlist() %>% table() %>% sort() %>% as.data.frame() %>% filter(!. == "") %>% tail(20) %>%
+  ggplot(aes(x = ., y = Freq)) + geom_col(aes(fill = .),
+                                          alpha = 0.8,
+                                          width = 0.8) + coord_flip() +
+  labs(title = "Número de Pessoas por Área Atuação", x = "Área de atuação", y =
+         "Quantidade", fill = "Área Atuação") +
+  geom_text(aes(label = Freq),
+            hjust = -0.2,
+            vjust = 0.3,
+            size = 3.5) +
+  scale_y_continuous(limits = c(0, 800)) + theme_bw()
+```
+
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Pessoas por Área Atuação (Grafico de Pizza)", fig.pos = 'H', out.width = "80%"}
+ggplot(areasAtuacao, aes(x = "", y = Quantidade, fill = Areas)) +
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y", start = 0, direction = -1) +
+  labs(title = "Número de Pessoas por Área Atuação") +
+  geom_text(
+    data = areasAtuacao,
+    aes(
+      x = "",
+      y = Quantidade,
+      label = paste(Porcentagem, "%")
+    ),
+    position = position_stack(vjust = 0.5),
+    size = 3
+  )
+```
+
+\newpage 
+O gráficos ilustram a quantidade de professores por sub área de atuação (em forma de colunas e pizza). Podemos observar que todos os 12 professores são da sub área de engenharias e apenas 14\% dos professores são de outras sub áreas.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Pessoas por Sub Área Atuação (Grafico de Colunas)", fig.pos = 'H', out.width = "80%"}
+perfis %>%
+  sapply(function(x)
+    unique(x$areas_de_atuacao$sub_area)) %>%
+  unlist() %>% table() %>% sort() %>% as.data.frame() %>% filter(!. == "") %>% tail(30) %>%
+  ggplot(aes(x = ., y = Freq)) + geom_col(fill = "red1",
+                                          alpha = 0.8,
+                                          width = 0.8) + coord_flip() +
+  geom_text(aes(label = Freq),
+            hjust = -0.2,
+            vjust = 0.3,
+            size = 3.5) +
+  labs(title = "Número de Pessoas por Sub Área Atuação", x = "Sub Área", y =
+         "Quantidade") +
+  scale_y_continuous(limits = c(0, 300)) + theme_bw()
+```
+
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Pessoas por Sub Área Atuação (Grafico de Pizza)", fig.pos = 'H', out.width = "80%"}
+ggplot(subArea, aes(x = "", y = Quantidade, fill = subArea)) +
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y", start = 0, direction = -1) +
+  labs(title = "Número de Pessoas por Sub Área Atuação") +
+  geom_text(
+    data = subArea,
+    aes(
+      x = "",
+      y = Quantidade,
+      label = paste(Porcentagem, "%")
+    ),
+    position = position_stack(vjust = 0.5),
+    size = 3
+  )
+```
+
+\newpage 
+O gráficos ilustram a quantidade de professores por especialidade (em forma de colunas e pizza). Podemos observar que 21\% professores tem especialidade em Obras de Terra ou Enrocamento e Fundações e Escavações e apenas 58\% dos professores tem outras especialidades.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Pessoas por Especialidade (Grafico de Colunas)", fig.pos = 'H', out.width = "80%"}
+perfis %>%
+  sapply(function(x)
+    unique(x$areas_de_atuacao$especialidade)) %>%
+  unlist() %>% table() %>% sort() %>% as.data.frame() %>% filter(!. == "") %>% tail(29) %>%
+  ggplot(aes(x = ., y = Freq)) + geom_col(fill = "red1",
+                                          alpha = 0.8,
+                                          width = 0.8) + coord_flip() +
+  labs(title = "Número de Pessoas por Especialidade", x = "Especialidade", y =
+         "Quantidade") +
+  geom_text(aes(label = Freq),
+            hjust = -0.2,
+            vjust = 0.3,
+            size = 3.0) +
+  theme_bw() +
+  scale_y_continuous(limits = c(0, 150))
+```
+
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Pessoas por Especialidade (Grafico de Pizza)", fig.pos = 'H', out.width = "80%"}
+ggplot(especialidadesFrequentes,
+       aes(x = "", y = Quantidade, fill = Especialidade)) +
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y", start = 0, direction = -1) +
+  labs(title = "Número de Pessoas por Especialidade") +
+  geom_text(
+    data = especialidadesFrequentes,
+    aes(
+      x = "",
+      y = Quantidade,
+      label = paste(Porcentagem, "%")
+    ),
+    position = position_stack(vjust = 0.5),
+    size = 3
+  )
+```
+
+\newpage O gráfico ilustra a quantidade de professores por quantitativo de grande áreas (em forma de barras). Podemos observar que tem uma contagem de 8 perfis nas grandes áreas.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Pessoas por Quantitativo de Grande Áreas", fig.pos = 'H'}
+perfis %>%
+  sapply(function(x)
+    length(unique(x$areas_de_atuacao$grande_area))) %>%
+  unlist() %>% table() %>% sort() %>% rev() %>% as.data.frame() %>%
+  ggplot(aes(x = ., y = Freq)) + geom_col(aes(fill = .), alpha = 0.9) +
+  geom_text(aes(label = Freq), size = 3.5, vjust = -1) +
+  labs(title = "Número de Pessoas por Quantitativo de Grande Áreas",
+       y = "Número de Pessoas", x = "Quantitativo de Grande Áreas", fill = "Quantitativo de Grande Áreas") + theme_bw()
+```
+
+\newpage O gráfico ilustra a quantidade de professores por quantitativo de áreas (em forma de barras). Podemos observar que tem uma contagem de 7 perfis nas áreas.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Pessoas por Quantitativo de Grande Áreas", fig.pos = 'H'}
+perfis %>%
+  sapply(function(x)
+    length(unique(x$areas_de_atuacao$area))) %>%
+  unlist() %>% table() %>% sort() %>% rev() %>% as.data.frame() %>%
+  ggplot(aes(x = ., y = Freq)) + geom_col(aes(fill = .), alpha = 0.9) +
+  geom_text(aes(label = Freq), size = 3.5, vjust = -1) +
+  labs(title = "Número de Pessoas por Quantitativo de Áreas",
+       y = "Número de Pessoas", x = "Quantitativo de Áreas", fill = "Quantitativo de Áreas") + theme_bw()
+```
+
+\newpage O gráfico ilustra a quantidade de professores por quantitativo de sub-áreas (em forma de barras). Podemos observar que tem uma contagem de igual de 4 perfis nas sub áreas.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Pessoas por Quantitativo de Sub Áreas", fig.pos = 'H'}
+perfis %>%
+  sapply(function(x)
+    length(unique(x$areas_de_atuacao$sub_area))) %>%
+  unlist() %>% table() %>% sort() %>% rev() %>% as.data.frame() %>%
+  ggplot(aes(x = ., y = Freq)) + geom_col(aes(fill = .), alpha = 0.9) +
+  geom_text(aes(label = Freq), size = 3.5, vjust = -1) +
+  labs(title = "Número de Pessoas por Quantitativo de Sub Áreas",
+       y = "Número de Pessoas", x = "Quantitativo de Sub Áreas", fill = "Quantitativo de Sub Áreas") + theme_bw()
+```
+
+\newpage O gráfico ilustra a quantidade de professores por quantitativo de especialidades (em forma de barras). Podemos observar que tem uma contagem de igual de 4 perfis de especialidades.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Pessoas por Quantitativo de Especialidades", fig.pos = 'H'}
+perfis %>%
+  sapply(function(x)
+    length(unique(x$areas_de_atuacao$especialidade))) %>%
+  unlist() %>% table() %>% sort() %>% rev() %>% as.data.frame() %>%
+  ggplot(aes(x = ., y = Freq)) + geom_col(aes(fill = .)) + 
+  geom_text(aes(label = Freq), size = 3.5, vjust = -1) +
+  labs(title = "Número de Pessoas por Quantitativo de Especialidades",
+       y = "Número de Pessoas", x = "Quantitativo de Especialidades", fill = "Quantitativo de Especialidades") + theme_bw()
+```
+
+\newpage O gráfico ilustra a quantidade de artigos publicados por quantitativo de professores (em forma de colunas). Podemos observar que tem uma contagem de 2 perfis conseguiram publicar 26 artigos e só 1 conseguiu publicar 32 artigos.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Artigos Publicados por Quantitativo de Pessoas", fig.pos = 'H'}
+perfis %>%
+  sapply(function(x)
+    length(x$producao_bibiografica$PERIODICO$ano)) %>%
+  unlist() %>% table()   %>% rev() %>% as.data.frame() %>%
+  ggplot(aes(x = ., y = Freq)) + geom_col(aes(fill = .), width = 0.6) +
+  labs(title = "Número de Artigos Publicados por Quantitativo de Pessoas", y = "Número de Pessoas", x = "Quantitativo de Artigos", fill = "Quantitativo de Artigos") +
+  geom_text(aes(label = Freq),
+            hjust = -0.2,
+            vjust = 0.3,
+            size = 3.5) + 
+  theme_bw() + coord_flip()
+```
+
+\newpage O gráfico ilustra a quantidade de capítulo publicados por quantitativo de professores (em forma de colunas). Podemos observar que a maioria dos perfis consegueriam publicar pelo menos 1 capitulo de livro. Enquanto, 3 perfis não tiveram sucesso.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Capítulos de Livros por Quantitativo de Pessoas", fig.pos = 'H'}
+perfis %>%
+  sapply(function(x)
+    length(x$producao_bibiografica$CAPITULO_DE_LIVRO$ano)) %>%
+  unlist() %>% table() %>% rev() %>% as.data.frame() %>%
+  ggplot(aes(x = ., y = Freq)) + geom_col(aes(fill = .), width = 0.8) + coord_flip() +
+  labs(title = "Número de Capítulos de Livros por Quantitativo de Pessoas", y = "Número de Pessoas", x = "Quantitativo de Capítulos de Livros", fill = "Quantitativo de Capítulos de Livros") +
+  scale_x_discrete() + theme_bw() + geom_text(aes(label = Freq),
+                                              hjust = -0.3,
+                                              vjust = 0.3,
+                                              size = 3.1) + scale_y_continuous(limits = c(0, 500))
+```
+
+\newpage O gráfico ilustra a quantidade de livros publicados por quantitativo de professores (em forma de colunas). Podemos observar que metade dos perfis 6 obtiveram sucesso em publicar livros. Enquanto outra metade não tiveram sucesso.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Livros por Quantitativo de Pessoas", fig.pos = 'H'}
+perfis %>%
+  sapply(function(x)
+    length(x$producao_bibiografica$LIVRO$ano)) %>%
+  unlist() %>% table() %>% rev() %>% as.data.frame() %>%
+  ggplot(aes(x = ., y = Freq)) + geom_col(aes(fill = .), width = 0.5) + coord_flip() +
+  labs(title = "Número de Livros por Quantitativo de Pessoas", y = "Número de Pessoas", x = "Quantitativo de Publicações", fill = "Quantitativo de Livros") +
+  theme_bw() + geom_text(aes(label = Freq),
+                         hjust = -0.3,
+                         vjust = 0.3,
+                         size = 3.1) + scale_y_continuous(limits = c(0, 400))
+```
+
+\newpage O gráfico ilustra quantidade de orientações de mestrado por quantitativo de professores (em forma de colunas). Podemos observar uma contagem de 2 perfis tiveram 15 orientações de mestrado e 1 perfil teve 25 orientações.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Orientações de Mestrado por Quantitativo de Pessoas", fig.pos = 'H'}
+perfis %>%
+  sapply(function(x)
+    length(x$orientacoes_academicas$ORIENTACAO_CONCLUIDA_MESTRADO$ano)) %>%
+  unlist() %>% table() %>% rev() %>% as.data.frame() %>%
+  ggplot(aes(x = ., y = Freq)) + geom_col(aes(fill = .), width = 0.5) + coord_flip() +
+  labs(title = "Número de Orientações de Mestrado por Quantitativo de Pessoas",
+       y = "Número de Pessoas", x = "Quantitativo de Orientações de Mestrado", fill = "Quantitativo de Orientações de Mestrado") + scale_y_continuous(limits = c(0, 400)) +
+  theme_bw() +
+  geom_text(aes(label = Freq),
+            hjust = -0.3,
+            vjust = 0.3,
+            size = 3.1)
+```
+
+\newpage O gráfico ilustra a quantidade de orientações de doutorado por quantitativo de professores (em forma de colunas). Podemos observar uma contagem de 2 perfis tiveram 8 orientações de doutorado e 1 perfil teve 13 orientações.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Orientações de Doutorado por Quantitativo de Pessoas", fig.pos = 'H'}
+perfis %>%
+  sapply(function(x)
+    length(
+      x$orientacoes_academicas$ORIENTACAO_CONCLUIDA_DOUTORADO$ano
+    )) %>%
+  unlist() %>% table() %>% rev() %>% as.data.frame() %>%
+  ggplot(aes(x = ., y = Freq)) + geom_col(aes(fill = .), width = 0.5) + coord_flip() +
+  labs(title = "Número de Orientações de Doutorado por Quantitativo de Pessoas",
+       y = "Número de Pessoas", x = "Quantitativo de Orientações de Doutorado", fill = "Quantitativo de Orientações de Doutorado") + scale_y_continuous(limits = c(0, 300)) +
+  theme_bw() +
+  geom_text(aes(label = Freq),
+            hjust = -0.3,
+            vjust = 0.3,
+            size = 3.1)
+```
+
+\newpage O gráfico ilustra a quantidade de orientações de pós-doutorado por quantitativo de professores(em forma de colunas). Podemos observar uma contagem de 2 perfis já tiveram 2 orientações de pós-doutorado e 8 perfis não tiveram nenhuma orientação.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Orientações de Pós-Doutorado por Quantitativo de Pessoas", fig.pos = 'H'}
+perfis %>%
+  sapply(
+    function(x)
+      length(
+        x$orientacoes_academicas$ORIENTACAO_CONCLUIDA_POS_DOUTORADO$ano
+      )
+  ) %>%
+  unlist() %>% table() %>% rev() %>% as.data.frame() %>%
+  ggplot(aes(x = ., y = Freq)) + geom_col(aes(fill = .), width = 0.5) + coord_flip() +
+  labs(title = "Número de Orientações de Pós-Doutorado por Quantitativo de Pessoas",
+       y = "Número de Pessoas", x = "Quantitativo de Orientaçõess de Pós-Doutorado", fill = "Quantitativo de Orientações de Pós-Doutorado") + scale_y_continuous(limits = c(0, 200)) +
+  theme_bw() +
+  geom_text(aes(label = Freq),
+            hjust = -0.3,
+            vjust = 0.3,
+            size = 3.1)
+```
+
+\newpage O gráfico ilustra as as relações de Orientações Concluídas e Publicações (em formas de pontos). Concluimos que a grande área de engenharias teve maior indice de orientações concluídas.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Relação de Orientações Concluídas e Publicações", fig.pos = 'H'}
+dataFrameAreas %>%
+  select(-sub_area, -especialidade) %>%
+  distinct() %>%
+  group_by(publicacoes) %>%
+  ggplot(aes(publicacoes, orientacoes_concluidas, color = area)) +
+  geom_point(shape = 2, size = .8) + geom_jitter(shape = 2, size = .8) +
+  ggtitle('Relação de Orientações Concluídas e Publicações') +
+  labs(x = 'Publicações', y = 'Orientações concluídas') + facet_wrap(. ~ grande_area, ncol = 2)
+```
+
+
+\newpage O gráfico ilustra a quantidade publicações de capítulos de livros por ano/país (em forma de pontos). Podemos observar que o Brasil foi o país que teve maior de capitulos de livros publicados em comparação a outros país. Foi possível perceber o maior número de publicações de capítulos de livros nos ano de 2012. Além disso, percebe-se grande número de publicações de capítulos de livros nos anos de 2015 e 2017. Por outro lado, nota-se que nos anos de 2013, 2014 e 2016 houve pequeno número de publicações de capítulos de livros.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Número de Publicações de capítulos de livros por ano e país", fig.pos = 'H'}
+dataFramePublicacoes %>%
+  filter((tipo_producao %in% c('LIVRO', 'CAPITULO_DE_LIVRO'))) %>%
+  group_by(tipo_producao, pais_de_publicacao) %>%
+  ggplot(aes(ano, tipo_producao, col = pais_de_publicacao)) +
+  labs(title = "Número de Publicações de capítulos de livros por ano e país") +
+  geom_point(alpha = 0.7) + geom_jitter() +
+  labs(x = 'Ano', y = 'Tipo de Produção')
+```
+
+\newpage 
+### Arquivo Publicação
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+dataFramePublicacoesPeriodico <- pub.ls2df(publicacoes, 1) #artigos
+dataFramePublicacoesPeriodico <-
+  dataFramePublicacoesPeriodico %>% mutate(t_pub = "periodico")
+
+dataFramePublicacoesLivros <- pub.ls2df(publicacoes, 2) #livros
+dataFramePublicacoesLivros <-
+  dataFramePublicacoesLivros %>% mutate(t_pub = "livro")
+
+dataFramePublicacoesCapitulos <-
+  pub.ls2df(publicacoes, 3) #capitulos de livros
+dataFramePublicacoesCapitulos <-
+  dataFramePublicacoesCapitulos %>% mutate(t_pub = "capitulo")
+
+dataFramePublicacoesJornais <-
+  pub.ls2df(publicacoes, 4) #texto em jornais
+dataFramePublicacoesJornais <-
+  dataFramePublicacoesJornais %>% mutate(t_pub = "jornal")
+
+dataFramePublicacoesEventos <- pub.ls2df(publicacoes, 5) #eventos
+dataFramePublicacoesEventos <-
+  dataFramePublicacoesEventos %>% mutate(t_pub = "evento") %>% rename(ano = ano_do_trabalho)
+
+dataFramePublicacoesAceitas <-
+  pub.ls2df(publicacoes, 6) #artigo aceito
+dataFramePublicacoesAceitas <-
+  dataFramePublicacoesAceitas %>% mutate(t_pub = "artigo aceito")
+
+dataFramePublicacoesDemais <-
+  pub.ls2df(publicacoes, 7) #demais tipos de publis
+dataFramePublicacoesDemais <-
+  dataFramePublicacoesDemais %>% mutate(t_pub = "demais tipos")
+```
+
+
+O gráfico ilustra a quantidade de publicações por ano (em forma de barras). Podemos observar teve um crescimento alto de periódicos em 2016, mas teve uma queda ruim na quantidade em 2018. Percebe-se o maior volume de publicações em periódicos no triênio 2014-2015-2016. Por outro lado, o menor número de publicações em periódicos ocorreu no ano de 2018.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Publicações por ano", fig.pos = 'H'}
+dataFramePublicacoesPeriodico %>%
+  ggplot(aes(x = ano)) + geom_bar(aes(fill = ano)) +
+  geom_text(stat = "count", aes(label = formatC(..count.., big.mark = ",")), vjust =
+              -0.1) +
+  theme_bw() + labs(title = "Publicações por ano", x = "Ano", y = "Quantidade de Periódicos") +
+  scale_y_continuous(labels = comma)
+```
+
+\newpage O gráfico ilustra as 20 revistas publicadas mais publicadas. Podemos observar que revistas International Journal of Geomechanics e The Electronic Journal of Geotechnical Engineering são as principais alvos para publicação pelos pesquisadores.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "As 20 Revistas com Maior Publicações", fig.pos = 'H'}
+dataFramePublicacoesPeriodico %>% select(periodico) %>% table() %>% as.data.frame() %>% arrange(desc(Freq)) %>%
+  head(20) %>% ggplot(aes(x = reorder(., (Freq)), y = Freq)) + geom_col(fill = "red1") + coord_flip() +
+  labs(title = "As 20 Revistas com Maior Publicações",
+       y = "Número de Publicações", x = "Revistas") + geom_text(
+         aes(label = comma(Freq)),
+         hjust = -0.2,
+         vjust = 0.3,
+         size = 3.5
+       ) + theme_bw() +
+  scale_y_continuous(limits = c(0, 400))
+```
+
+\newpage O gráfico ilustra a quantidade de publicações de livros em países estrangeiros (em forma de colunas). Podemos observar que os únicos país que tiveram publicações de livros foram México e Espanha.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Publicações de Livros em Países Estrangeiros", fig.pos = 'H'}
+dataFramePublicacoesLivros %>%
+  group_by(pais_de_publicacao) %>%
+  summarise(Quantidade = n()) %>%
+  filter(pais_de_publicacao != "Brasil") %>%
+  ggplot(aes(x = reorder(pais_de_publicacao, (Quantidade)), y = Quantidade)) +
+  geom_col(aes(fill = pais_de_publicacao)) + geom_text(
+    aes(label = comma(Quantidade)),
+    hjust = -0.2,
+    vjust = 0.3,
+    size = 3.5
+  ) + coord_flip() +
+  labs(title = "Publicações de Livros em Países Estrangeiros", x = "Países", y = "Quantidade de Livros") +
+  theme_bw()
+```
+
+\newpage O gráfico ilustra a quantidade de publicações de livros no Brasil (em forma de pontos). Observamos que o Brasil é o único país que publicou livros.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Livros publicados por ano", fig.pos = 'H'}
+dataFramePublicacoesLivros %>%
+  filter(
+    pais_de_publicacao %in% c(
+      "Brasil",
+      "Estados Unidos",
+      "Holanda",
+      "Grã-Bretanha",
+      "Alemanha",
+      "Suiça"
+    )
+  ) %>%
+  group_by(ano, pais_de_publicacao) %>%
+  ggplot(aes(x = ano, y = pais_de_publicacao, color = pais_de_publicacao)) +
+  xlab("Ano") + ylab("País") + geom_point() + geom_jitter() +
+  ggtitle("Livros publicados por ano") + 
+  labs(color = "País de Publicações")
+```
+
+\newpage O gráfico ilustra a quantidade de participação de eventos de livros em países estrangeiros (em forma de colunas). Nota-se um interesse em participar de eventos na Colômbia. Nenhuma partição ocorreu no Brasil. 
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Participação de Eventos em Países Estrangeiros", fig.pos = 'H'}
+dataFramePublicacoesEventos %>%
+  group_by(pais_do_evento) %>%
+  summarise(Quantidade = n()) %>%
+  filter(pais_do_evento != "Brasil") %>%
+  ggplot(aes(x = reorder(pais_do_evento, (Quantidade)), y = Quantidade)) +
+  geom_col(aes(fill = pais_do_evento)) + geom_text(
+    aes(label = comma(Quantidade)),
+    hjust = -0.2,
+    vjust = 0.3,
+    size = 2.5
+  ) + coord_flip() +
+  labs(title = "Participação de Eventos em Países Estrangeiros", x = "Países", y = "Quantidade de Livros") +
+  theme_bw()
+```
+
+
+\newpage 
+### Arquivo Orientação
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+dataFrameOrientacoesPosDoutorado <-
+  ori.ls2df(orientacoes, 6) 
+dataFrameOrientacoesDoutorado <-
+  ori.ls2df(orientacoes, 7) 
+dataFrameOrientacoesMestrado <-
+  ori.ls2df(orientacoes, 8)
+
+dataFrameOrientacoes <-
+  rbind(
+    rbind(
+      dataFrameOrientacoesPosDoutorado,
+      dataFrameOrientacoesDoutorado
+    ),
+    dataFrameOrientacoesMestrado
+  )
+
+orientacoesSum <- group_by(dataFrameOrientacoes, ano, natureza) %>%
+  summarise(n = n())
+
+```
+
+
+
+O gráfico ilustra a quantidade de orientações por ano (em forma de barras). Podemos perceber o maior número de orientações no ano de 2016, enquanto que o menor número de orientações deu-se em 2018.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Orientações por ano", fig.pos = 'H'}
+dataFrameOrientacoes %>%
+  ggplot(aes(x = ano)) + geom_bar(aes(fill = ano)) +
+  geom_text(stat = "count", aes(label = formatC(..count.., big.mark = ",")), vjust =
+              -0.1) +
+  theme_bw() + labs(title = "Orientações por ano", x = "Ano", y = "Quantidade de Periódicos") +
+  scale_y_continuous(labels = comma)
+```
+
+\newpage 
+O gráfico ilustra a quantidade de orientações completas por ano (em forma de barras). Podemos observar teve um crescimento alto de dissertação de mestrado e tese de doutorado em 2016 e pouca supervisão de pós-doutorado.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Natureza das Orientações Completas Por Ano", fig.pos = 'H'}
+ggplot(dataFrameOrientacoes, aes(ano, fill = factor(natureza))) +
+  geom_bar(stat = "count", position = "dodge") +
+  ggtitle("Natureza das Orientações Completas Por Ano") +
+  theme(legend.position = "right", legend.text = element_text(size = 7)) +
+  guides(fill = guide_legend(
+    nrow = 5,
+    byrow = TRUE,
+    title.position = "top"
+  )) +
+  labs(x = "Ano", y = "Quantidade") + labs(fill = "Natureza") + theme_bw() +
+  geom_text(
+    hjust = 0.6,
+    vjust = -0.4,
+    size = 3,
+    color = 'black',
+    position = position_dodge(width = 0.9),
+    stat = "count",
+    aes(
+      group = factor(natureza),
+      label = formatC(..count.., big.mark = ",")
+    ),
+    check_overlap = TRUE
+  )
+```
+
+\newpage 
+O gráfico ilustra a quantidade de orientações completas por ano (em forma de linhas e pontos). Podemos observar uma queda relevante nas orientações de mestrados completas em 2018. Por outro lado, analisamos um aumento significativo nas orientações de pós-doutorados completas até 2016. Enquanto, as orientações de doutorado só diminuíam. Percebe-se na série histórica de orientação dissertação de mestrado em 2016 teve um pico de 25 orientações. Por outro lado, em 2018 só teve 5 orientações. Na visão de orientações de supervisão pós-doutorado no ano 2018 não teve nenhuma.
+```{r, echo=FALSE, warning=FALSE, fig.align='center', message=FALSE, fig.cap = "Quantidade de Orientações Completas por Ano", fig.pos = 'H'}
+ggplot(orientacoesSum,
+       aes(
+         x = ano,
+         y = n,
+         group = natureza,
+         color = natureza
+       )) +
+  geom_line(alpha = 0.6) +
+  geom_point(alpha = 0.6) +
+ggtitle("Quantidade de Orientações Completas por Ano")
+```
+
+## Revisão do processo
+
+Por meio das análises realizadas nas seções anteriores, tem-se que a modelagem de análise com os modelos estatísticos foram adequados para esse projeto, uma vez que permitiu a obtenção de resultados não triviais em relação aos dois programas de pós-graduação analisados.
+
+Tem-se ainda que os modelos e os datasets em que se aplicaram os modelos nesse relatório são facilmente verificáveis e replicáveis por meio da leitura desse documento. 
+
+\newpage
+# Fase 6 - Implantação (deployment)
+
+Na fase de implantação, realiza-se o planejamento da implantação dos scripts desenvolvidos para o ambiente operacional.
+Os scripts desenvolvidos nesse trabalho permitem uma análise de dados do programa de pós-graduação sob outros pontos de vista, que podem trazer estatísticas e relações não triviais.
+
+# Conclusão
+
+Esse trabalho mostrou uma forma de analisar dados de arquivos datasets .json utilizando as técnicas da CRISP-DM. Dessa forma foi possível aprender sobre a ciência de dados e as possíveis análises que ela pode proporcionar; como os dados devem ser preparados; como deve-se buscar informações úteis e analisa-las; gerar gráficos visualmente adequados; implementa scripts usando técnicas de análise de redes e de mineração de texto. Também me ensinou a dificuldade que a falta de padronização pode causar, principalmente quando existem diversos arquivos para analisar de diferentes fontes.
+
+Tendo como base modelo do relatório disponibilizado pelo professor no aprender UnB da disciplina e implementando scripts R com técnicas de manipulação de dados, análise de redes com igraph e mineração de textos e geração de grafos foi para extrair e analisar os dados dos datasets das melhores formas possíveis, seguindo as 6 fases do CRISP-DM.
+
+Por fim, os resultados obtidos podem ser considerados relevantes e bem-sucedidos para o conjunto de dados. Ao comparar as pontuações de avaliação quadrienal, que colocam o programa Geotecnia como um programa nota 6 que possui um número alto de publicações e orientações acadêmicas.
+
+
+# Referências

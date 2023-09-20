@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/556398/0f72dfbff7ec45a6b254e1980bb9fe04
+bundleId: https://api.rpubs.com/api/v1/document/556398/0f72dfbff7ec45a6b254e1980bb9fe04
+url: http://rpubs.com/luanfreitas/556398
+when: 1575638906.05304
