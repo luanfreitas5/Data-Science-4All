@@ -1,4 +1,4 @@
-# Data-Science-4All
+# Data Science 4All
 
 📊🔍 Projeto da disciplina "Data Science 4All" da Universidade de Brasília (UnB)!
 
